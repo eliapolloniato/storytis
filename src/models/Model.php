@@ -83,11 +83,11 @@ abstract class Model
         return $objs;
     }
 
-    public final static function get(int $id): ?object
+    protected static function getByAttribute(string $attr, mixed $value): ?Model
     {
         global $db;
-        $query = $db->prepare("SELECT * FROM " . static::getTableName() . " WHERE id = :id");
-        $query->execute(['id' => $id]);
+        $query = $db->prepare("SELECT * FROM " . static::getTableName() . " WHERE $attr = :value");
+        $query->execute(['value' => $value]);
         $res = $query->fetch(PDO::FETCH_ASSOC);
 
         if (!$res) {
@@ -110,5 +110,17 @@ abstract class Model
         $obj->_id = $res['id'];
 
         return $obj;
+    }
+
+    public final static function get(int $id): ?Model
+    {
+        return static::getByAttribute('id', $id);
+    }
+
+    protected static function delete(int $id)
+    {
+        global $db;
+        $query = $db->prepare("DELETE FROM " . static::getTableName() . " WHERE id = :id");
+        $query->execute(['id' => $id]);
     }
 }

@@ -32,6 +32,11 @@ class User extends Model
         return password_verify($password, $this->password);
     }
 
+    public static function findByName($name): ?User
+    {
+        return self::getByAttribute("name", $name);
+    }
+
     public function getName(): string
     {
         return $this->name;
