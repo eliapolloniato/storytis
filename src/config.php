@@ -7,4 +7,5 @@ return array(
     "routes" => __DIR__ . "/routes",
     "basePage" => __DIR__ . "/base.html",
     "baseUrl" => "http://contabile.e-fermi.it:" . $_SERVER["SERVER_PORT"],
+    "adminUser" => "admin",
 );
