@@ -24,6 +24,11 @@ class Story extends Model
         return $this->title;
     }
 
+    public function setTitle(string $newTitle)
+    {
+        $this->title = $newTitle;
+    }
+
     public function getChapters(): array
     {
         if (empty($this->_chapters)) {

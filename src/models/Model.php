@@ -158,6 +158,9 @@ abstract class Model
 
             // Set the id of the object
             $objs[$key]->_id = $value['id'];
+
+            // Set the db
+            $objs[$key]->_db = $db;
         }
 
         return $objs;
@@ -186,6 +189,9 @@ abstract class Model
 
             // Set the id of the object
             $objs[$key]->_id = $value['id'];
+
+            // Set the db
+            $objs[$key]->_db = $db;
         }
 
         return $objs;
@@ -216,6 +222,9 @@ abstract class Model
 
         // Set the id of the object
         $obj->_id = $res['id'];
+
+        // Set the db
+        $obj->_db = $db;
 
         return $obj;
     }
