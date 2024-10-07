@@ -11,7 +11,7 @@ return array(
     "routes" => array(
         "playStory" => "/story/play/",
         "admin" => "/admin",
-        "adminCreator" => "/admin/creator",
+        "adminCreator" => "/admin/creator/",
         "editStory" => "/admin/creator/edit/",
         "chapter" => "/admin/creator/chapter/",
         "choice" => "/admin/creator/choice/",
