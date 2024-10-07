@@ -7,7 +7,6 @@ class Chapter extends Model
     protected string $title; // VARCHAR(255)
     protected string $content; // TEXT
     protected int $storyId; // INT (AUTO_INCREMENT) FK (Story.id)
-    protected int $sequenceNumber; // INT
     protected array $_choices = []; // Array of Choice objects
 
     public function __construct(Story $story, string $title, string $content, array $choices = [])
@@ -34,18 +33,11 @@ class Chapter extends Model
         $this->storyId = $storyId;
     }
 
-    public function setSequenceNumber(int $sequenceNumber)
-    {
-        $this->sequenceNumber = $sequenceNumber;
-    }
-
-    public function getSequenceNumber(): int
-    {
-        return $this->sequenceNumber;
-    }
-
     public function getChoices(): array
     {
+        if (empty($this->_choices)) {
+            $this->_choices = Choice::getAllBy("chapterId", $this->getId());
+        }
         return $this->_choices;
     }
 

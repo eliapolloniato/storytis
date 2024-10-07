@@ -26,6 +26,9 @@ class Story extends Model
 
     public function getChapters(): array
     {
+        if (empty($this->_chapters)) {
+            $this->_chapters = Chapter::getAllBy("storyId", $this->getId());
+        }
         return $this->_chapters;
     }
 
@@ -41,7 +44,6 @@ class Story extends Model
         // Save the chapters
         foreach ($this->_chapters as $key => $chapter) {
             $chapter->setStoryId($this->getId());
-            $chapter->setSequenceNumber($key);
             $chapter->save();
         }
 

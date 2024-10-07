@@ -1,10 +1,10 @@
 <?php
 
-enum SkillType
+enum SkillType: int
 {
-    case STRENGTH;
-    case INTELLIGENCE;
-    case CHARISMA;
-    case AGILITY;
-    case LUCK;
+    case STRENGTH = 0;
+    case INTELLIGENCE = 1;
+    case CHARISMA = 2;
+    case AGILITY = 3;
+    case LUCK = 4;
 }

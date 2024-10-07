@@ -7,18 +7,22 @@ require_once __DIR__ . "/./Reward.php";
 class Choice extends Model
 {
     protected string $optionText; // VARCHAR(255)
-    protected int $rewardId; // INT FK (Reward.id)
+    protected ?int $rewardId; // INT FK (Reward.id) NULL
     protected int $chapterId; // INT FK (Chapter.id)
     protected int $nextChapterId; // INT FK (Chapter.id)
 
 
-    public function __construct(string $optionText, Reward $reward, Chapter $chapter, Chapter $nextChapter)
+    public function __construct(string $optionText, Chapter $nextChapter, Reward $reward = null, Chapter $chapter = null)
     {
         parent::__construct();
         $this->optionText = $optionText;
-        $this->chapterId = $chapter->getId();
+        if ($chapter) {
+            $this->chapterId = $chapter->getId();
+        }
         $this->nextChapterId = $nextChapter->getId();
-        $this->rewardId = $reward->getId();
+        if ($reward) {
+            $this->rewardId = $reward->getId();
+        }
     }
 
     public function setChapterId(int $chapterId)

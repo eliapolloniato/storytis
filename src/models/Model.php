@@ -1,5 +1,13 @@
 <?php
 
+use Monolog\Level;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+
+$log = new Logger('name');
+$log->pushHandler(new StreamHandler('your.log', Level::Debug));
+
 $db = require __DIR__ . "/../db/db.php";
 
 abstract class Model
@@ -27,6 +35,20 @@ abstract class Model
         return md5(implode(',', array_values($fields)));
     }
 
+    private function get_object_public_vars(): array
+    {
+        $fields = get_object_vars($this);
+
+        // Filter attributes with _ prefix
+        foreach ($fields as $key => $value) {
+            if (strpos($key, '_') === 0) {
+                unset($fields[$key]);
+            }
+        }
+
+        return $fields;
+    }
+
     public function save(): int
     {
         // Check if the object has been modified
@@ -39,8 +61,19 @@ abstract class Model
             $table = $this->getTableName();
             $fields = $this->getFields();
             $values = $this->getValues();
-            $query = $this->_db->prepare("UPDATE $table SET ($fields) VALUES ($values) WHERE id = :id");
-            $query->execute(['id' => $this->_id]);
+
+            $keyValuePairs = [];
+            foreach (explode(',', $fields) as $key) {
+                $key = trim($key);
+                $keyValuePairs[] = "$key = :$key";
+            }
+
+            $query = $this->_db->prepare("UPDATE $table SET " . implode(',', $keyValuePairs) . " WHERE id = :id");
+
+            global $log;
+            $log->debug("update: " . $query->queryString);
+
+            $query->execute(['id' => $this->_id, ...$this->get_object_public_vars()]);
 
             return $this->_id;
         }
@@ -50,6 +83,10 @@ abstract class Model
         $fields = $this->getFields();
         $values = $this->getValues();
         $query = $this->_db->prepare("INSERT INTO $table ($fields) VALUES ($values)");
+
+        global $log;
+        $log->debug("inset: " . $query->queryString);
+
         $query->execute();
 
         // Set the id of the object
@@ -75,6 +112,8 @@ abstract class Model
         if (hash_equals($obj->hash(), $this->hash())) {
             return false;
         }
+
+        return true;
     }
 
     protected function getFields()
@@ -115,6 +154,34 @@ abstract class Model
         global $db;
         $query = $db->prepare("SELECT * FROM " . static::getTableName());
         $query->execute();
+        $res = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        // Create new objects from the called class
+        $objs = [];
+        foreach ($res as $key => $value) {
+            // Get constructor parameters
+            $reflection = new ReflectionClass(static::class);
+
+            // Create a new object
+            $objs[$key] = $reflection->newInstanceWithoutConstructor();
+
+            // Set the attributes of the object
+            foreach ($value as $k => $v) {
+                $objs[$key]->$k = $v;
+            }
+
+            // Set the id of the object
+            $objs[$key]->_id = $value['id'];
+        }
+
+        return $objs;
+    }
+
+    public final static function getAllBy(string $attr, mixed $value): array
+    {
+        global $db;
+        $query = $db->prepare("SELECT * FROM " . static::getTableName() . " WHERE $attr = :value");
+        $query->execute(['value' => $value]);
         $res = $query->fetchAll(PDO::FETCH_ASSOC);
 
         // Create new objects from the called class

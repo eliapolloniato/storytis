@@ -2,23 +2,24 @@
 
 require_once __DIR__ . "/./Model.php";
 require_once __DIR__ . "/./Skill.php";
+require_once __DIR__ . "/../enums/SkillType.php";
 
 
 class Reward extends Model
 {
-    protected int $affectedSkillId;
+    protected int $affectedSkillType;
     protected int $value;
 
-    public function __construct(Skill $affectedSkill, int $value)
+    public function __construct(SkillType $affectedSkillType, int $value)
     {
         parent::__construct();
-        $this->affectedSkillId = $affectedSkill->getId();
+        $this->affectedSkillType = $affectedSkillType->value;
         $this->value = $value;
     }
 
-    public function getAffectedSkill(): ?Skill
+    public function getAffectedSkillType(): ?SkillType
     {
-        return Skill::get($this->affectedSkillId);
+        return SkillType::cases()[$this->affectedSkillType];
     }
 
     public function getValue(): int
