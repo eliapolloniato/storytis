@@ -102,7 +102,8 @@ abstract class Model
 
         // Set the attributes of the object
         foreach ($res as $k => $v) {
-            $obj->$k = $v;
+            if ($k !== 'id')
+                $obj->$k = $v;
         }
 
         // Set the id of the object
