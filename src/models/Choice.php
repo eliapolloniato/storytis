@@ -55,6 +55,15 @@ class Choice extends Model
         return Chapter::get($this->nextChapterId);
     }
 
+    public function getReward(): ?Reward
+    {
+        if (!$this->rewardId) {
+            return null;
+        }
+
+        return Reward::get($this->rewardId);
+    }
+
     public static function getTableName()
     {
         return "Choices";

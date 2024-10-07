@@ -15,6 +15,9 @@ return array(
         "editStory" => "/admin/creator/edit/",
         "chapter" => "/admin/creator/chapter/",
         "choice" => "/admin/creator/choice/",
+        "reward" => "/admin/creator/reward/",
     ),
     "maxChoices" => 4,
+    "minRewardValue" => -10,
+    "maxRewardValue" => 10,
 );
