@@ -11,6 +11,23 @@ $router = new \Bramus\Router\Router();
 
 
 /* MOUNT ROUTES */
+<<<<<<< HEAD
+
+$router->mount('/movies', function () use ($router) {
+
+    // will result in '/movies/'
+    $router->get('/', function () {
+        echo 'movies overview';
+    });
+
+    // will result in '/movies/id'
+    $router->get('/(\d+)', function ($id) {
+        echo 'movie id ' . htmlentities($id);
+    });
+});
+
+=======
+>>>>>>> refs/rewritten/develop
 foreach (glob(__DIR__ . "/routes/*.php") as $filename) {
     require $filename;
 }
