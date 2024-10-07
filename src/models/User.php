@@ -40,6 +40,18 @@ class User extends Model
         return $this->name;
     }
 
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
+
+    public function setPassword(string $password)
+    {
+        $this->password = self::hashPassword($password);
+    }
+
+
+
     public function getHashedPassword(): string
     {
         return $this->password;
