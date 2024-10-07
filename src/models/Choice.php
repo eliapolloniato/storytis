@@ -4,6 +4,8 @@ require_once __DIR__ . "/./Model.php";
 require_once __DIR__ . "/./Chapter.php";
 require_once __DIR__ . "/./Reward.php";
 
+require_once __DIR__ . "/../modifiers/modifiers.php";
+
 class Choice extends Model
 {
     protected string $optionText; // VARCHAR(255)
@@ -100,7 +102,8 @@ class Choice extends Model
         if ($skill === null) {
             return false;
         }
-        return $skill->getValue() >= $this->getRequiredSkillLevel();
+        
+        return getActualValue($skill->getValue(), $character->getClass(), $skill->getType()) >= $this->getRequiredSkillLevel();
     }
 
     public static function getTableName()
