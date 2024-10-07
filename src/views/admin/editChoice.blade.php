@@ -36,7 +36,7 @@
         <h1 class="text-2xl font-bold mb-2">Aggiungi scelta</h1>
     @endisset
 
-    <div class="w-full md:w-4/6 md:max-w-xl">
+    <div class="w-full">
 
         @isset($choice)
             <form method="POST" action="./edit">
