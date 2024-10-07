@@ -7,5 +7,17 @@ return array(
     "routes" => __DIR__ . "/routes",
     "basePage" => __DIR__ . "/base.html",
     "baseUrl" => "http://contabile.e-fermi.it:" . $_SERVER["SERVER_PORT"],
-    "adminUser" => "admin",
+    "adminUser" => -1,
+    "routes" => array(
+        "playStory" => "/story/play/",
+        "admin" => "/admin",
+        "adminCreator" => "/admin/creator/",
+        "editStory" => "/admin/creator/edit/",
+        "chapter" => "/admin/creator/chapter/",
+        "choice" => "/admin/creator/choice/",
+        "reward" => "/admin/creator/reward/",
+    ),
+    "maxChoices" => 4,
+    "minRewardValue" => -10,
+    "maxRewardValue" => 10,
 );

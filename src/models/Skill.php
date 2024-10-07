@@ -6,14 +6,14 @@ require_once __DIR__ . "/../enums/SkillType.php";
 class Skill extends Model
 {
     protected int $characterId;
-    protected SkillType $typeId;
+    protected int $typeId;
     protected int $value;
 
     public function __construct(Character $character, SkillType $typeId, int $value)
     {
         parent::__construct();
         $this->characterId = $character->getId();
-        $this->typeId = $typeId;
+        $this->typeId = $typeId->value;
         $this->value = $value;
     }
 
@@ -29,7 +29,7 @@ class Skill extends Model
 
     public function getType(): SkillType
     {
-        return $this->typeId;
+        return SkillType::cases()[$this->typeId];
     }
 
     public function getValue(): int
