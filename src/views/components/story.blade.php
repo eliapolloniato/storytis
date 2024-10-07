@@ -9,7 +9,11 @@
             </svg>
             <h1 class="text2xl font-black uppercase mb-3 mt-1">{{ $story->getTitle() }}</h1>
         </div>
-        <p>Capitoli: <span>{{ count($story->getChapters()) }}</span></p>
+        <p>Capitoli: <span class="bold">{{ count($story->getChapters()) }}</span></p>
+        @isset($admin)
+            <a class="flex flec-row items-center font-medium text-primary-600 dark:text-primary-500 hover:underline"
+                href="{{ $config['routes']['editStory'] . $story->getId() }}">Modifica</a>
+        @endisset
         <a class="flex flec-row items-center font-medium text-primary-600 dark:text-primary-500 hover:underline"
             href="{{ $config['routes']['playStory'] . $story->getId() }}">Inizia <svg
                 class="fill-primary-600 dark:fill-primary-500 size-4" xmlns="http://www.w3.org/2000/svg"
