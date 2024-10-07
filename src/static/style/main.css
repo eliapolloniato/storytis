@@ -18,5 +18,6 @@ html.dark {
 
 #root {
     /* Margin for navbar */
-    @apply mt-20;
+    @apply pt-20;
+    @apply h-screen
 }
