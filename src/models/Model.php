@@ -21,6 +21,10 @@ abstract class Model
         foreach ($fields as $key => $value) {
             if (strpos($key, '_') === 0) {
                 unset($fields[$key]);
+                continue;
+            }
+            if (empty($value)) {
+                $fields[$key] = "__null__";
             }
         }
 

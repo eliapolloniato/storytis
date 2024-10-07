@@ -1,6 +1,8 @@
 <?php
 
 require_once __DIR__ . "/./Model.php";
+require_once __DIR__ . "/./Game.php";
+require_once __DIR__ . "/./Character.php";
 
 class User extends Model
 {
@@ -39,5 +41,26 @@ class User extends Model
     public function getHashedPassword(): string
     {
         return $this->password;
+    }
+
+    public function getGames(): array
+    {
+        return Game::getByUser($this);
+    }
+
+    public function getCharacters(): array
+    {
+        return Character::getByUser($this);
+    }
+
+    public function getCharacter(int $id): ?Character
+    {
+        $characters = $this->getCharacters();
+        foreach ($characters as $character) {
+            if ($character->getId() === $id) {
+                return $character;
+            }
+        }
+        return null;
     }
 }

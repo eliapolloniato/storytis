@@ -7,6 +7,7 @@ require_once __DIR__ . "/./Reward.php";
 class Story extends Model
 {
     protected string $title; // VARCHAR(255)
+    protected ?int $firstChapterId; // INT
     protected array $_chapters = [];
 
     /**
@@ -17,6 +18,7 @@ class Story extends Model
     {
         parent::__construct();
         $this->title = $title;
+        $this->firstChapterId = null;
         $this->_chapters = $chapters;
     }
 
@@ -38,20 +40,29 @@ class Story extends Model
         return $this->_chapters;
     }
 
-    public function addChapter(Chapter $chapter)
+    public function getFirstChapter(): ?Chapter
     {
-        $this->_chapters[] = $chapter;
+        if (empty($this->firstChapterId)) {
+            return null;
+        }
+
+        return Chapter::get($this->firstChapterId);
+    }
+
+    public function setFirstChapter(Chapter $chapter): void
+    {
+        $this->firstChapterId = $chapter->getId();
     }
 
     public function save(): int
     {
-        $id = parent::save();
+        // If there is 1 chapter, set it as first chapter
 
-        // Save the chapters
-        foreach ($this->_chapters as $key => $chapter) {
-            $chapter->setStoryId($this->getId());
-            $chapter->save();
+        if (count($this->getChapters()) === 1) {
+            $this->setFirstChapter($this->getChapters()[0]);
         }
+        
+        $id = parent::save();
 
         return $id;
     }

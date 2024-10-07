@@ -77,6 +77,13 @@ class Chapter extends Model
         return $choices;
     }
 
+    public function setAsFirstChapter(): void
+    {
+        $story = $this->getStory();
+        $story->setFirstChapter($this);
+        $story->save();
+    }
+
     public function getStory(): ?Story
     {
         return Story::get($this->storyId);
@@ -111,6 +118,9 @@ class Chapter extends Model
             $choice->setChapterId($this->getId());
             $choice->save();
         }
+
+        // Save the story
+        $this->getStory()->save();
 
         return $id;
     }

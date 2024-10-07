@@ -56,4 +56,9 @@ class Character extends Model
 
         return $id;
     }
+
+    public static function getByUser(User $user): array
+    {
+        return self::getAllBy("userId", $user->getId());
+    }
 }

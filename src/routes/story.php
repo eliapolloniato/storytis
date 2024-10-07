@@ -15,63 +15,61 @@ require_once __DIR__ . "/../models/Character.php";
 require_once __DIR__ . "/../models/User.php";
 require_once __DIR__ . "/../enums/CharacterClass.php";
 require_once __DIR__ . "/../enums/SkillType.php";
+require_once __DIR__ . "/../models/Game.php";
 
 $router->mount("/story", function () use ($router, $blade) {
     $router->get("/", function () use ($blade) {
-        echo loadPage($blade->render("admin.creator"), "Home");
+        echo loadPage($blade->render("games"), "Storie");
     });
 
-    $router->get("/create", function () use ($blade) {
-        $s = new Story("Test4");
-        $s->save();
-        $c1 = new Chapter($s, "Chapter 1", "This is the first chapter");
-        $c1->save();
-        $c2 = new Chapter($s, "Chapter 2", "This is the second chapter");
-        $c2->save();
-        $c3 = new Chapter($s, "Chapter 3", "This is the third chapter");
-        $c3->save();
+    // Check if game exists and if the user is the owner
+    $router->before("GET|POST", "/play/(\d+).*", function ($gameId) use ($router) {
+        $game = Game::get($gameId);
+        if (!$game) {
+            $router->trigger404();
+            return;
+        }
 
-        $r1 = new Reward(SkillType::AGILITY, 2);
-        $r1->save();
-        $r2 = new Reward(SkillType::STRENGTH, 1);
-        $r2->save();
-        $ch1 = new Choice("Choice 1", $c2, $r1);
-        $ch2 = new Choice("Choice 2", $c3, $r2);
-
-        $c1->addChoice($ch1);
-        $c1->addChoice($ch2);
-
-        $s->addChapter($c1);
-        $s->addChapter($c2);
-        $s->addChapter($c3);
-
-        $s->save();
-    });
-
-    // Check if story exists
-    $router->before("GET|POST", "/play/(\d+).*", function ($storyId) use ($router) {
-        $story = Story::get($storyId);
-        if (!$story) {
+        if ($game->getUser()->getId() != $_SESSION["user"]) {
             $router->trigger404();
             return;
         }
     });
 
-    // Check if chapter exists
-    $router->before("GET|POST", "/play/(\d+)/(\d+).*", function ($storyId, $chapterId) use ($router) {
-        $chapter = Chapter::get($chapterId);
-        if (!$chapter) {
+    // Check if choice exists
+    $router->before("GET|POST", "/play/(\d+)/(\d+).*", function ($gameId, $choiceId) use ($router) {
+        $choice = Choice::get($choiceId);
+
+        // Check if chapter belongs to story
+        $story = Game::get($gameId)->getStory();
+        if ($choice->getNextChapter()->getStory() != $story) {
             $router->trigger404();
             return;
         }
     });
 
-    $router->get("/play/(\d+)", function ($storyId) use ($blade) {
-        echo "Story $storyId";
+    $router->get("/play/(\d+)", function ($gameId) use ($blade) {
+        $game = Game::get($gameId);
+        $story = $game->getStory();
+
+        echo loadPage($blade->render("story", [
+            "story" => $story,
+            "game" => $game,
+            "chapter" => $game->getChapter(),
+            "choices" => $game->getChapter()->getChoices()
+        ]), $story->getTitle());
     });
 
-    $router->get("/play/(\d+)/(\d+)", function ($storyId, $chapterId) use ($blade) {
-        echo "Story $storyId, Chapter $chapterId";
+    // Choice clicked
+    $router->get("/play/(\d+)/(\d+)", function ($gameId, $choiceId) use ($blade) {
+        $game = Game::get($gameId);
+        $choice = Choice::get($choiceId);
+
+        // Update game chapter
+        $game->setChapter($choice->getNextChapter());
+        $game->save();
+
+        header("Location: /story/play/$gameId");
     });
 });
 
