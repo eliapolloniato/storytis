@@ -157,6 +157,89 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
 
         header("Location: /admin/creator/chapter/" . $chapterId . "/edit");
     });
+
+    $router->before("GET|POST", "/reward/(\d+).*", function ($rewardId) use ($router, $blade) {
+        if (!Reward::get($rewardId)) {
+            $router->trigger404();
+            return;
+        }
+    });
+
+    $router->get("/reward/(\d+)/delete", function ($rewardId) use ($router, $blade) {
+        $reward = Reward::get($rewardId);
+        $reward->delete();
+
+        header("Location: /admin/creator");
+    });
+
+    $router->get("/reward/(\d+)/edit", function ($rewardId) use ($router, $blade) {
+        $reward = Reward::get($rewardId);
+        echo loadPage($blade->render("admin.editReward", ["reward" => $reward]), "Modifica ricompensa");
+    });
+
+    $router->post("/reward/(\d+)/edit", function ($rewardId) use ($router, $blade) {
+        $reward = Reward::get($rewardId);
+
+        if (!isset($_POST["value"]) || !isset($_POST["description"]) || !isset($_POST["affectedSkillType"])) {
+            // 400 Bad Request
+            header("HTTP/1.1 400 Bad Request");
+            echo "Missing value, description or affectedSkillType";
+            return;
+        }
+
+        if (!is_numeric($_POST["value"])) {
+            // 400 Bad Request
+            header("HTTP/1.1 400 Bad Request");
+            echo "Value must be a number";
+            return;
+        }
+
+        if ($_POST["affectedSkillType"] < 0 || $_POST["affectedSkillType"] >= count(SkillType::cases())) {
+            // 400 Bad Request
+            header("HTTP/1.1 400 Bad Request");
+            echo "Invalid affectedSkillType";
+            return;
+        }
+
+        $reward->setDescription($_POST["description"]);
+        $reward->setValue($_POST["value"]);
+        $reward->setAffectedSkillType(SkillType::cases()[$_POST["affectedSkillType"]]);
+        $reward->save();
+
+        header("Location: " . $_SERVER["REQUEST_URI"]);
+    });
+
+    $router->get("/reward/add", function () use ($router, $blade) {
+        echo loadPage($blade->render("admin.editReward"), "Aggiungi ricompensa");
+    });
+
+    $router->post("/reward/add", function () use ($router, $blade) {
+        if (!isset($_POST["value"]) || !isset($_POST["description"]) || !isset($_POST["affectedSkillType"])) {
+            // 400 Bad Request
+            header("HTTP/1.1 400 Bad Request");
+            echo "Missing value, description or affectedSkillType";
+            return;
+        }
+
+        if (!is_numeric($_POST["value"])) {
+            // 400 Bad Request
+            header("HTTP/1.1 400 Bad Request");
+            echo "Value must be a number";
+            return;
+        }
+
+        if ($_POST["affectedSkillType"] < 0 || $_POST["affectedSkillType"] >= count(SkillType::cases())) {
+            // 400 Bad Request
+            header("HTTP/1.1 400 Bad Request");
+            echo "Invalid affectedSkillType";
+            return;
+        }
+
+        $newReward = new Reward($_POST["description"], SkillType::cases()[$_POST["affectedSkillType"]], $_POST["value"]);
+        $newReward->save();
+
+        header("Location: /admin/creator/reward/" . $newReward->getId() . "/edit");
+    });
 });
 
 // Check if the user is admin
