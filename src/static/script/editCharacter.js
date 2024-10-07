@@ -59,3 +59,25 @@ const set = (min, max) => {
         }
     });
 }
+
+const sendCharacterEdit = () => {
+    if (availablePoints - currentlyUsedPoints !== 0) {
+        alert("Devi usare tutti i punti disponibili!");
+        return;
+    }
+
+    let formData = new FormData();
+
+    for (let i = 0; i < inputs.length; i++) {
+        formData.append(inputs.item(i).name, inputs.item(i).value);
+    }
+
+    fetch(`/character/${document.getElementById("character-id").value}/edit`, {
+        method: 'POST',
+        body: formData
+    }).then((response) => {
+        if (response.status === 200) {
+            window.location.reload();
+        }
+    });
+};

@@ -106,6 +106,32 @@ $router->mount("/character", function () use ($router, $blade) {
         header("Location: /characters");
     });
 
+    $router->post("(\d+)/edit", function ($id) use ($router, $blade) {
+        $character = Character::get($id);
+
+        foreach ($_POST as $key => $value) {
+            if (strpos($key, "skill") !== false) {
+                $skillId = explode("-", $key)[1];
+                if (!is_numeric($skillId)) {
+                    header("HTTP/1.0 400 Bad Request");
+                    echo loadPage($blade->render("error", ["message" => "La skill $skillId non è valida"]), "Errore");
+                    return;
+                }
+
+                try {
+                    $skill = SkillType::cases()[$skillId];
+                } catch (Exception $e) {
+                    // 400 Bad Request
+                    header("HTTP/1.0 400 Bad Request");
+                    echo loadPage($blade->render("error", ["message" => "La skill $skillId non è valida"]), "Errore");
+                    return;
+                }
+
+                $character->getSkill($skill)->setValue($value);
+                $character->getSkill($skill)->save();
+            }
+        }
+    });
 });
 
 // Check if the user is logged in before accessing the character subroutes

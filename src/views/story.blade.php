@@ -108,29 +108,24 @@
             <div class="p-4 md:p-5 space-y-4">
 
                 <h2 class="text-xl">Punti disponibili: <span class="text-primary-500"
-                        id="available-points">{{ '2' }}</span>
+                        id="available-points">{{ 0 }}</span>
                 </h2>
 
-                @include('components.inputCounter', [
-                    'name' => 'Forza',
-                    'min' => 0,
-                    'id' => 1,
-                    'max' => 10,
-                    'value' => 5,
-                ])
-
-                @include('components.inputCounter', [
-                    'name' => 'Intelligenza',
-                    'min' => 0,
-                    'id' => 2,
-                    'max' => 15,
-                    'value' => 5,
-                ])
-
+                @foreach ($game->getCharacter()->getSkills() as $skill)
+                    @include('components.inputCounter', [
+                        'name' => $skill->getType()->name,
+                        'min' => $config['minSkillPoints'],
+                        'id' => $skill->getType()->value,
+                        'max' => $config['maxSkillPoints'],
+                        'value' => $skill->getValue(),
+                    ])
+                @endforeach
+                <input type="hidden" id="game-id" value="{{ $game->getId() }}">
+                <input type="hidden" id="character-id" value="{{ $game->getCharacter()->getId() }}">
                 <script src="/static/script/editCharacter.js" defer></script>
                 <!-- Modal footer -->
                 <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button data-modal-hide="character-edit" type="button"
+                    <button data-modal-hide="character-edit" type="button" onclick="sendCharacterEdit()"
                         class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Salva</button>
                     <button data-modal-hide="character-edit" type="button"
                         class="ms-3 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Annulla</button>
