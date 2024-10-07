@@ -8,7 +8,7 @@
         </svg>
         <h1 class="font-black uppercase mb-3 mt-1 text-center line-clamp-2">{{ $game->getStory()->getTitle() }}</h1>
 
-        <span class="bold">{{ $game->getChapter()->getTitle() }}</span>
+        <span class="bold text-center">{{ $game->getChapter()->getTitle() }}</span>
 
         <div class="flex flex-row">
             <a class="mx-1 flex flex-row items-center" href="{{ $config['routes']['playGame'] . $game->getId() }}"><svg
