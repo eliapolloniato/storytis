@@ -39,8 +39,12 @@ abstract class Model
         foreach ($fields as $key => $value) {
             if (strpos($key, '_') === 0) {
                 unset($fields[$key]);
+                continue;
             }
+
+            $fields[$key] = addslashes($value);
         }
+        
 
         return $fields;
     }
@@ -123,7 +127,7 @@ abstract class Model
 
     protected function getValues()
     {
-        $fields = get_object_vars($this);
+        $fields = $this->get_object_public_vars();
 
         // Filter attributes with _ prefix
         foreach ($fields as $key => $value) {
