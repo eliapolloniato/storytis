@@ -66,6 +66,7 @@
                                 <option value="{{ $ch->getId() }}">{{ $ch->getTitle() }}</option>
                             @endforeach
                         @else
+                            <option value="" selected>Seleziona il capitolo successivo</option>
                             @foreach ($chapter->getOtherChapters() as $ch)
                                 <option value="{{ $ch->getId() }}">{{ $ch->getTitle() }}</option>
                             @endforeach
@@ -157,6 +158,7 @@
                                     </option>
                                 @endforeach
                             @else
+                                <option value="" selected>Seleziona la ricompensa</option>
                                 @foreach (Reward::getAll() as $reward)
                                     <option value="{{ $reward->getId() }}">
                                         {{ '(' . $reward->getAffectedSkillName() . ', ' . $reward->getValue() . ') - ' . $reward->getDescription() }}

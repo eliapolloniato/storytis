@@ -3,6 +3,8 @@
         @foreach ($characters as $character)
             @include('components.characterCard', ['character' => $character])
         @endforeach
-        @include('components.characterCard', ['character' => null])
+        @if (count($characters) < $config['maxCharacters'])
+            @include('components.characterCard', ['character' => null])
+        @endif
     </div>
 </div>

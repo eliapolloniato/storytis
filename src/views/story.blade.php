@@ -30,8 +30,8 @@
                     class="p-2 h-full w-full border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg flex flex-col items-center">
                     <div class="mb-1 md:my-4 w-full flex items-center flex-row justify-between px-4">
                         <!-- Immagine del personaggio -->
-                        <img src="https://placehold.co/400x400" alt="Character Image"
-                            class="size-14 rounded-full object-cover">
+                        <img src="https://api.dicebear.com/7.x/adventurer/svg?seed={{ $game->getCharacter()->getName() }}"
+                            alt="Character Image" class="size-14 rounded-full object-cover">
                         <!-- Nome del personaggio -->
                         <h2 class="md:text-xl text-md font-bold mb-1 text-primary-500 text-center">
                             {{ $game->getCharacter()->getName() }}</h2>

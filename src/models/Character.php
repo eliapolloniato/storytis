@@ -49,6 +49,11 @@ class Character extends Model
         return CharacterClass::cases()[$this->classId];
     }
 
+    public function getUser(): User
+    {
+        return User::get($this->userId);
+    }
+
     public function addSkill(Skill $skill)
     {
         $this->_skills[] = $skill;

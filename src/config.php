@@ -34,4 +34,5 @@ return array(
     "maxSkillPoints" => 10,
     "minSkillPoints" => 0,
     "initialAvailablePoints" => 15,
+    "maxCharacters" => 3,
 );

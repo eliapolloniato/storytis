@@ -17,12 +17,23 @@ require_once __DIR__ . "/../enums/CharacterClass.php";
 require_once __DIR__ . "/../enums/SkillType.php";
 require_once __DIR__ . "/../models/Game.php";
 
+$config = require __DIR__ . "/../config.php";
+
 $router->mount("/character", function () use ($router, $blade) {
     $router->get("/add", function () use ($blade) {
         echo loadPage($blade->render("characterCreator"), "Creazione personaggio");
     });
 
     $router->post("/add", function () use ($router, $blade) {
+        global $config;
+
+        // Check if the user has already reached the max number of characters
+        $characters = Character::getByUser(User::get($_SESSION["user"]));
+        if (count($characters) >= $config["maxCharacters"]) {
+            echo loadPage($blade->render("error", ["message" => "Hai già raggiunto il numero massimo di personaggi"]), "Errore");
+            return;
+        }
+
 
         // Check if the name is set
         if (!isset($_POST["characterName"]) || empty($_POST["characterName"])) {
@@ -31,7 +42,7 @@ $router->mount("/character", function () use ($router, $blade) {
         }
 
         // Check if the class is set
-        if (!isset($_POST["characterClass"]) || empty($_POST["characterClass"]) || !is_numeric($_POST["characterClass"])) {
+        if (!isset($_POST["characterClass"]) || !is_numeric($_POST["characterClass"])) {
             echo loadPage($blade->render("error", ["message" => "La classe del personaggio non può essere vuota"]), "Errore");
             return;
         }
@@ -73,6 +84,24 @@ $router->mount("/character", function () use ($router, $blade) {
         // Create the character
         $character = new Character(User::get($_SESSION["user"]), $_POST["characterName"], CharacterClass::cases()[$_POST["characterClass"]], $skills);
         $character->save();
+
+        header("Location: /characters");
+    });
+
+    $router->get("(\d+)/delete", function ($id) use ($router, $blade) {
+        $character = Character::get($id);
+
+        if ($character === null) {
+            echo loadPage($blade->render("error", ["message" => "Il personaggio non esiste"]), "Errore");
+            return;
+        }
+
+        if ($character->getUser()->getId() !== $_SESSION["user"]) {
+            echo loadPage($blade->render("error", ["message" => "Non puoi eliminare un personaggio che non ti appartiene"]), "Errore");
+            return;
+        }
+
+        $character->delete();
 
         header("Location: /characters");
     });
