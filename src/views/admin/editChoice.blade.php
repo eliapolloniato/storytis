@@ -112,9 +112,16 @@
                     </div>
                 </div>
 
-                <button type="submit"
-                    class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-                    Salva
-                </button>
+                <div class="w-full flex justify-between">
+                    <button type="submit"
+                        class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                        Salva
+                    </button>
+
+                    @isset($choice)
+                        <a href="{{ $config['routes']['choice'] . $choice->getId() . '/delete' }}"
+                            class="flex items-center justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Elimina</a>
+                    @endisset
+                </div>
             </form>
     </div>

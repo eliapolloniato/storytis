@@ -205,6 +205,14 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
         header("Location: /admin/creator/chapter/" . $choice->getChapter()->getId() . "/edit");
     });
 
+    $router->get("/choice/(\d+)/delete", function ($choiceId) use ($router, $blade) {
+        $choice = Choice::get($choiceId);
+        $chapter = $choice->getChapter();
+        $choice->delete();
+
+        header("Location: /admin/creator/chapter/" . $chapter->getId() . "/edit");
+    });
+
     $router->get("/chapter/(\d+)/addChoice", function ($chapterId) use ($router, $blade) {
         $chapter = Chapter::get($chapterId);
         echo loadPage($blade->render("admin.editChoice", ["chapter" => $chapter]), "Aggiungi scelta");
