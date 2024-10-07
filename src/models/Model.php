@@ -23,7 +23,7 @@ abstract class Model
                 unset($fields[$key]);
                 continue;
             }
-            if (empty($value)) {
+            if ($value === null) {
                 $fields[$key] = "__null__";
             }
         }
@@ -77,6 +77,8 @@ abstract class Model
         $values = $this->getValues();
         $query = $this->_db->prepare("INSERT INTO $table ($fields) VALUES ($values)");
 
+        print_r($this->getFields());
+
         $query->execute();
 
         // Set the id of the object
@@ -108,15 +110,11 @@ abstract class Model
 
     protected function getFields()
     {
-        $fields = get_object_vars($this);
+        $fields = $this->get_object_public_vars();
 
-        // Filter attributes with _ prefix and null values
+        // Filter attributes with null values
         foreach ($fields as $key => $value) {
-            if (strpos($key, '_') === 0) {
-                unset($fields[$key]);
-            }
-
-            if (empty($value)) {
+            if ($value === null) {
                 unset($fields[$key]);
             }
 
@@ -135,7 +133,7 @@ abstract class Model
                 unset($fields[$key]);
             }
 
-            if (empty($value)) {
+            if ($value === null) {
                 unset($fields[$key]);
             }
         }
