@@ -8,6 +8,8 @@ require_once __DIR__ . "/../utils/loadPage.php";
 $blade = require __DIR__ . "/../utils/blade.php";
 
 require_once __DIR__ . "/../models/Story.php";
+require_once __DIR__ . "/../models/Reward.php";
+require_once __DIR__ . "/../models/Item.php";
 
 $config = require __DIR__ . "/../config.php";
 
@@ -188,27 +190,49 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
 
     $router->get("/reward/(\d+)/edit", function ($rewardId) use ($router, $blade) {
         $reward = Reward::get($rewardId);
+
+        // Check if reward is an item
+        if (Item::isItem($reward)) {
+            $reward = Item::get($rewardId);
+        }        
+
         echo loadPage($blade->render("admin.editReward", ["reward" => $reward]), "Modifica ricompensa");
     });
 
     $router->post("/reward/(\d+)/edit", function ($rewardId) use ($router, $blade) {
         $reward = Reward::get($rewardId);
 
-        if (!isset($_POST["value"]) || !isset($_POST["description"]) || !isset($_POST["affectedSkillType"])) {
+        $value = null;
+
+        if (Item::isItem($reward)) {
+            $value = $_POST["item"];
+            $reward = Item::get($rewardId);
+        } else {
+            $value = $_POST["value"];
+        }
+
+        if (!isset($value) || !isset($_POST["description"])) {
             // 400 Bad Request
             header("HTTP/1.1 400 Bad Request");
-            echo "Missing value, description or affectedSkillType";
+            echo "Missing value, description";
             return;
         }
 
-        if (!is_numeric($_POST["value"])) {
+        if (!Item::isItem($reward) && !isset($_POST["affectedSkillType"])) {
+            // 400 Bad Request
+            header("HTTP/1.1 400 Bad Request");
+            echo "Invalid affectedSkillType";
+            return;
+        }
+
+        if (!Item::isItem($reward) && !is_numeric($_POST["value"])) {
             // 400 Bad Request
             header("HTTP/1.1 400 Bad Request");
             echo "Value must be a number";
             return;
         }
 
-        if ($_POST["affectedSkillType"] < 0 || $_POST["affectedSkillType"] >= count(SkillType::cases())) {
+        if (!Item::isItem($reward) && ($_POST["affectedSkillType"] < 0 || $_POST["affectedSkillType"] >= count(SkillType::cases()))) {
             // 400 Bad Request
             header("HTTP/1.1 400 Bad Request");
             echo "Invalid affectedSkillType";
@@ -216,8 +240,12 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
         }
 
         $reward->setDescription($_POST["description"]);
-        $reward->setValue($_POST["value"]);
-        $reward->setAffectedSkillType(SkillType::cases()[$_POST["affectedSkillType"]]);
+        if (Item::isItem($reward)) {
+            $reward->setItemText($value);
+        } else {
+            $reward->setValue($value);
+            $reward->setAffectedSkillType(SkillType::cases()[$_POST["affectedSkillType"]]);
+        }
         $reward->save();
 
         header("Location: " . $_SERVER["REQUEST_URI"]);
@@ -228,17 +256,10 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
     });
 
     $router->post("/reward/add", function () use ($router, $blade) {
-        if (!isset($_POST["value"]) || !isset($_POST["description"]) || !isset($_POST["affectedSkillType"])) {
+        if (!isset($_POST["description"]) || !isset($_POST["affectedSkillType"])) {
             // 400 Bad Request
             header("HTTP/1.1 400 Bad Request");
-            echo "Missing value, description or affectedSkillType";
-            return;
-        }
-
-        if (!is_numeric($_POST["value"])) {
-            // 400 Bad Request
-            header("HTTP/1.1 400 Bad Request");
-            echo "Value must be a number";
+            echo "Missing description or affectedSkillType";
             return;
         }
 
@@ -249,7 +270,16 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
             return;
         }
 
-        $newReward = new Reward($_POST["description"], SkillType::cases()[$_POST["affectedSkillType"]], $_POST["value"]);
+        // Check if reward is an item
+        if (SkillType::cases()[$_POST["affectedSkillType"]] === SkillType::ITEM) {
+            $newReward = new Item('', $_POST["description"]);
+            $newReward->save();
+
+            header("Location: /admin/creator/reward/" . $newReward->getId() . "/edit");
+            return;
+        }
+
+        $newReward = new Reward($_POST["description"], SkillType::cases()[$_POST["affectedSkillType"]], 0);
         $newReward->save();
 
         header("Location: /admin/creator/reward/" . $newReward->getId() . "/edit");

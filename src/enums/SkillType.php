@@ -2,9 +2,15 @@
 
 enum SkillType: int
 {
-    case STRENGTH = 0;
-    case INTELLIGENCE = 1;
-    case CHARISMA = 2;
-    case AGILITY = 3;
-    case LUCK = 4;
+    case ITEM = 0;
+    case STRENGTH = 1;
+    case INTELLIGENCE = 2;
+    case CHARISMA = 3;
+    case AGILITY = 4;
+    case LUCK = 5;
+
+    public static function getOnlySkills(): array
+    {
+        return array_slice(self::cases(), 1);
+    }
 }

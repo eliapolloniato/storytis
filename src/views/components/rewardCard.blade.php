@@ -2,9 +2,15 @@
     <div
         class="w-full my-2 py-2 px-4 border-2 border-gray-200 dark:border-gray-800 rounded-lg shadow-lg flex flex-row justify-between items-center">
         <h1 class="text2xl font-black uppercase w-1/3">{{ $reward->getDescription() }}</h1>
-        <p><span class="font-bold">{{ $reward->getValue() > 0 ? '+' . $reward->getValue() : $reward->getValue() }}</span>
-            <span>{{ $reward->getAffectedSkillName() }}</span>
-        </p>
+        @if (Item::isItem($reward))
+            <p><span class="font-bold">{{ $reward->getValue() }}</span>
+            </p>
+        @else
+            <p><span
+                    class="font-bold">{{ $reward->getValue() > 0 ? '+' . $reward->getValue() : $reward->getValue() }}</span>
+                <span>{{ $reward->getAffectedSkillName() }}</span>
+            </p>
+        @endif
         <div class="flex flex-row">
             <a class="mx-1 flex flex-row items-center"
                 href="{{ $config['routes']['reward'] . $reward->getId() . '/edit' }}"><svg

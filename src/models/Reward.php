@@ -8,10 +8,10 @@ require_once __DIR__ . "/../enums/SkillType.php";
 class Reward extends Model
 {
     protected int $affectedSkillType;
-    protected int $value;
+    protected string $value;
     protected string $description;
 
-    public function __construct(string $description, SkillType $affectedSkillType, int $value)
+    public function __construct(string $description, SkillType $affectedSkillType, string $value = "0")
     {
         parent::__construct();
         $this->description = $description;
@@ -34,12 +34,12 @@ class Reward extends Model
         return SkillType::cases()[$this->affectedSkillType]->name;
     }
 
-    public function getValue(): int
+    public final function getValue(): int|string
     {
         return $this->value;
     }
 
-    public function setValue(int $value)
+    public final function setValue(int $value)
     {
         $this->value = $value;
     }
