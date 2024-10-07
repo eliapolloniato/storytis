@@ -9,10 +9,14 @@ class Skill extends Model
     protected int $typeId;
     protected int $value;
 
-    public function __construct(Character $character, SkillType $typeId, int $value)
+    public function __construct(?Character $character, SkillType $typeId, int $value)
     {
         parent::__construct();
-        $this->characterId = $character->getId();
+        if ($character !== null) {
+            $this->characterId = $character->getId();
+        } else {
+            $this->characterId = -1;
+        }
         $this->typeId = $typeId->value;
         $this->value = $value;
     }

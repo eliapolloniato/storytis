@@ -38,46 +38,19 @@
                     <!-- Informazioni del personaggio -->
                     <!-- Statistiche del personaggio -->
                     <div class="px-4 w-full flex flex-col md:flex-row md:flex-wrap justify-center flex-grow">
-                        <div class="w-full md:px-2 md:w-1/2">
-                            <div class="flex flex-row justify-between">
-                                <p>Forza:</p>
-                                <span>5</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700">
-                                <div class="bg-primary-600 h-1.5 rounded-full dark:bg-primary-500" style="width: 20%">
+                        @foreach ($game->getCharacter()->getSkills() as $skill)
+                            <div class="w-full md:px-2 md:w-1/2">
+                                <div class="flex flex-row justify-between">
+                                    <span>{{ $skill->getType()->name }}</span>
+                                    <span>{{ $skill->getValue() }}</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700">
+                                    <div class="bg-primary-600 h-1.5 rounded-full dark:bg-primary-500"
+                                        style="width: {{ (int) (($skill->getValue() / $config['maxSkillPoints']) * 100) }}%">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="w-full md:px-2 md:w-1/2">
-                            <div class="flex flex-row justify-between">
-                                <p>Intelligenza:</p>
-                                <span>5</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700">
-                                <div class="bg-primary-600 h-1.5 rounded-full dark:bg-primary-500" style="width: 75%">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-full md:px-2 md:w-1/2">
-                            <div class="flex flex-row justify-between">
-                                <p>Abilità:</p>
-                                <span>5</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700">
-                                <div class="bg-primary-600 h-1.5 rounded-full dark:bg-primary-500" style="width: 35%">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-full md:px-2 md:w-1/2">
-                            <div class="flex flex-row justify-between">
-                                <p>Esperienza:</p>
-                                <span>5</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700">
-                                <div class="bg-primary-600 h-1.5 rounded-full dark:bg-primary-500" style="width: 80%">
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <button type="button" data-modal-target="character-edit" data-modal-toggle="character-edit"
                         class="py-1.5 px-3 m-1 text-sm font-medium w-full text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-primary-400 dark:hover:bg-gray-700">
@@ -127,6 +100,7 @@
                 @include('components.inputCounter', [
                     'name' => 'Forza',
                     'min' => 0,
+                    'id' => 1,
                     'max' => 10,
                     'value' => 5,
                 ])
@@ -134,6 +108,7 @@
                 @include('components.inputCounter', [
                     'name' => 'Intelligenza',
                     'min' => 0,
+                    'id' => 2,
                     'max' => 15,
                     'value' => 5,
                 ])

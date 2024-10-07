@@ -12,11 +12,11 @@
             </svg>
         </button>
 
-        <input type="text" id="{{ strtolower($name) . '-input' }}" data-input-counter
+        <input type="text" id="{{ strtolower($name) . '-input' }}" name="{{ 'skill-' . $id }}" data-input-counter
             data-input-counter-min="{{ $min }}" data-input-counter-max="{{ $max }}"
             aria-describedby="helper-text-explanation"
             class="character-input bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-            value="{{ $value }}" autocomplete="off" disabled required>
+            value="{{ $value }}" autocomplete="off" readonly required>
 
         <button type="button" id="{{ strtolower($name) . '-increment' }}"
             data-input-counter-increment="{{ strtolower($name) . '-input' }}"

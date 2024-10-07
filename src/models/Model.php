@@ -77,8 +77,6 @@ abstract class Model
         $values = $this->getValues();
         $query = $this->_db->prepare("INSERT INTO $table ($fields) VALUES ($values)");
 
-        print_r($this->getFields());
-
         $query->execute();
 
         // Set the id of the object
