@@ -8,4 +8,7 @@ return array(
     "basePage" => __DIR__ . "/base.html",
     "baseUrl" => "http://contabile.e-fermi.it:" . $_SERVER["SERVER_PORT"],
     "adminUser" => "admin",
+    "routes" => array(
+        "playStory" => "/story/play/",
+    )
 );
