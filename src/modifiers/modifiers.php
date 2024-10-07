@@ -6,10 +6,10 @@ require_once __DIR__ . "/../enums/SkillType.php";
 // Modifiers per class
 $map = array(
     CharacterClass::WARRIOR->value => array(
-        SkillType::STRENGTH->value => 1.5,
-        SkillType::INTELLIGENCE->value => 0.8,
-        SkillType::AGILITY->value => 2,
-        SkillType::LUCK->value => 0.5,
+        SkillType::STRENGTH->value => 1,
+        SkillType::INTELLIGENCE->value => 1,
+        SkillType::AGILITY->value => 1,
+        SkillType::LUCK->value => 1,
     ),
     CharacterClass::MAGE->value => array(
         SkillType::STRENGTH->value => 0.8,
