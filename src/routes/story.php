@@ -112,15 +112,7 @@ $router->mount("/story", function () use ($router, $blade) {
         $reward = $choice->getReward();
 
         if ($reward === null) {
-<<<<<<< HEAD
-<<<<<<< HEAD
             header("Location: /story/play/$gameId");
-=======
-            echo loadPage($blade->render("error", ["message" => "La ricompensa non esiste!"]), "Errore");
->>>>>>> refs/rewritten/develop-2
-=======
-            header("Location: /story/play/$gameId");
->>>>>>> 0a12e00 (Fix scelta non presente)
             return;
         }
 
