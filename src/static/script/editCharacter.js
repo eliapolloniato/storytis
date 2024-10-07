@@ -20,7 +20,6 @@ for (let i = 0; i < inputs.length; i++) {
             if (availablePoints - currentlyUsedPoints <= 0) {
                 // disabilita tutti gli input
                 for (let j = 0; j < inputCounters.length; j++) {
-                    inputCounters[j]._targetEl.disabled = true;
                     inputCounters[j]._incrementEl.disabled = true;
                 }
             }
@@ -32,7 +31,6 @@ for (let i = 0; i < inputs.length; i++) {
             if (availablePoints - currentlyUsedPoints > 0) {
                 // abilita tutti gli input
                 for (let j = 0; j < inputCounters.length; j++) {
-                    inputCounters[j]._targetEl.disabled = false;
                     inputCounters[j]._incrementEl.disabled = false;
                 }
             }
