@@ -42,7 +42,7 @@ $router->mount("/character", function () use ($router, $blade) {
         }
 
         // Check if the class is set
-        if (!isset($_POST["characterClass"]) || empty($_POST["characterClass"]) || !is_numeric($_POST["characterClass"])) {
+        if (!isset($_POST["characterClass"]) || !is_numeric($_POST["characterClass"])) {
             echo loadPage($blade->render("error", ["message" => "La classe del personaggio non può essere vuota"]), "Errore");
             return;
         }

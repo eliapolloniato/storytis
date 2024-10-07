@@ -103,6 +103,11 @@ $router->mount("/story", function () use ($router, $blade) {
         /* ----- REWARD ----- */
         $reward = $choice->getReward();
 
+        if ($reward === null) {
+            echo loadPage($blade->render("error", ["message" => "La ricompensa non esiste!"]), "Errore");
+            return;
+        }
+
         // Get reward message
         $message = $reward->getDescription();
         $_SESSION["message"] = $message;
