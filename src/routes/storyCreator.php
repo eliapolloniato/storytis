@@ -15,7 +15,7 @@ $config = require __DIR__ . "/../config.php";
 
 $router->mount("/admin/creator", function () use ($router, $blade) {
     $router->get("/", function () use ($blade) {
-        echo loadPage($blade->render("admin.creator", ["stories" => Story::getAll(), "admin" => true]), "Creatore");
+        echo loadPage($blade->render("admin.creator", ["stories" => Story::getAll()]), "Creatore");
     });
 
     $router->get("/add", function () use ($router, $blade) {
@@ -307,7 +307,7 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
             return;
         }
 
-        $newReward = new Reward($_POST["description"], SkillType::cases()[$_POST["affectedSkillType"]], 0);
+        $newReward = new Reward($_POST["description"], SkillType::cases()[$_POST["affectedSkillType"]]);
         $newReward->save();
 
         header("Location: /admin/creator/reward/" . $newReward->getId() . "/edit");

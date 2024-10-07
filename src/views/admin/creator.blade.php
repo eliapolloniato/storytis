@@ -3,6 +3,8 @@
         @foreach ($stories as $story)
             @include('components.storyCard', ['story' => $story])
         @endforeach
-        @include('components.emptyStoryCard')
+        @if (User::get($_SESSION['user'])->isAdmin())
+            @include('components.emptyStoryCard')
+        @endif
     </div>
 </div>

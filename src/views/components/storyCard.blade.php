@@ -10,16 +10,16 @@
             <h1 class="font-black uppercase mb-3 mt-1 text-center line-clamp-2">{{ $story->getTitle() }}</h1>
         </div>
         <p>Capitoli: <span class="bold">{{ count($story->getChapters()) }}</span></p>
-        @isset($admin)
-            <a class="flex flec-row items-center font-medium text-primary-600 dark:text-primary-500 hover:underline"
+        @if (User::get($_SESSION['user'])->isAdmin())
+            <a class="flex items-center font-medium text-primary-600 dark:text-primary-500 hover:underline"
                 href="{{ $config['routes']['editStory'] . $story->getId() }}">Modifica</a>
         @endisset
         <a class="flex flex-row items-center font-medium text-primary-600 dark:text-primary-500 hover:underline"
-            href="{{ $config['routes']['playStory'] . $story->getId() }}">Inizia <svg
+            href="{{ $config['routes']['playStory'] . '?storyId=' . $story->getId() }}">Inizia <svg
                 class="fill-primary-600 dark:fill-primary-500 size-4" xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 -960 960 960">
                 <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z" />
             </svg></a>
 
-    </div>
+</div>
 </story>

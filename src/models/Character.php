@@ -34,7 +34,7 @@ class Character extends Model
         return $this->_skills;
     }
 
-    public function getClassId(): CharacterClass
+    public function getClass(): CharacterClass
     {
         return CharacterClass::cases()[$this->classId];
     }

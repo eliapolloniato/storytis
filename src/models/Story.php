@@ -34,6 +34,9 @@ class Story extends Model
 
     public function getChapters(): array
     {
+        if ($this->getId() === null) {
+            return $this->_chapters;
+        }
         if (empty($this->_chapters)) {
             $this->_chapters = Chapter::getAllBy("storyId", $this->getId());
         }

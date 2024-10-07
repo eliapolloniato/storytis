@@ -22,6 +22,27 @@ $router->mount("/story", function () use ($router, $blade) {
         echo loadPage($blade->render("games"), "Storie");
     });
 
+    $router->get("/play/new", function() use ($router, $blade) {
+        // Check if story exists
+        if (!isset($_GET["storyId"]) || !is_numeric($_GET["storyId"]) || Story::get($_GET["storyId"]) === null) {
+            $router->trigger404();
+            return;
+        }
+
+        // Check if character is selected
+        if (!isset($_GET["charId"]) || !is_numeric($_GET["charId"]) || Character::get($_GET["charId"]) === null) {
+            echo loadPage($blade->render("selectCharacter", ["storyId" => $_GET["storyId"]]), "Seleziona il personaggio");
+            return;
+        }
+
+
+        $newGame = new Game(Story::get($_GET["storyId"]), User::get($_SESSION["user"]), Character::get($_GET["charId"]), null);
+
+        $newGame->save();
+
+        header("Location: /story/play/" . $newGame->getId());
+    });
+
     // Check if game exists and if the user is the owner
     $router->before("GET|POST", "/play/(\d+).*", function ($gameId) use ($router) {
         $game = Game::get($gameId);

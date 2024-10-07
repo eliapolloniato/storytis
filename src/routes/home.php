@@ -9,7 +9,7 @@ $blade = require __DIR__ . "/../utils/blade.php";
 
 $router->mount("/home", function () use ($router, $blade) {
     $router->get("/", function () use ($blade) {
-        echo loadPage($blade->render("home", ["text" => "Home"]), "Home");
+        echo loadPage($blade->render("home", ["games" => User::get($_SESSION["user"])->getGames()]), "Home");
     });
 });
 

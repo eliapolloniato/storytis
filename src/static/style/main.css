@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+    .pause-animation {
+      animation-play-state: paused;
+    }
+ }
+
 @layer base {
     html {
         margin: 0;

@@ -39,7 +39,7 @@
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Caratteristica</label>
                     <select id="affectedSkillType" name="affectedSkillType"
                         class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        required {{ $reward instanceof Item ? 'disabled' : '' }}>
+                        required {{ isset($reward) ? ($reward instanceof Item ? 'disabled' : '') : '' }}>
                         @isset($reward)
                             @if ($reward->getAffectedSkillType() !== null)
                                 <option value="{{ $reward->getAffectedSkillType()->value }}" selected>
@@ -84,7 +84,7 @@
                                     data-input-counter-max="{{ $config['maxRewardValue'] }}"
                                     aria-describedby="helper-text-explanation"
                                     class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="999" value="{{ isset($reward) ? $reward->getValue() : 0 }}" required>
+                                    placeholder="0" value="{{ isset($reward) ? $reward->getValue() : 0 }}" required>
                                 <button type="button" id="increment-button" data-input-counter-increment="value"
                                     class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
                                     <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true"

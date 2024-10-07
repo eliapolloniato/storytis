@@ -19,7 +19,11 @@ class Game extends Model
         $this->userId = $user->getId();
         $this->storyId = $story->getId();
         $this->characterId = $character->getId();
-        $this->chapterId = $chapter->getId();
+        if ($chapter !== null) {
+            $this->chapterId = $chapter->getId();
+        } else {
+            $this->chapterId = $story->getFirstChapter()->getId();
+        }
         $this->startDate = date("Y-m-d");
     }
 
