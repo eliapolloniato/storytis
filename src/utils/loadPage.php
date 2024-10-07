@@ -9,7 +9,7 @@ function loadPage($content, $title = "")
 
     $basePage = file_get_contents($config["basePage"]);
 
-    $basePage = str_replace("%%navbar%%", $blade->render("navbar", ["title" => $title]), $basePage);
+    $basePage = str_replace("%%navbar%%", $blade->render("navbar"), $basePage);
     $basePage = str_replace("%%content%%", $content, $basePage);
     $basePage = str_replace("%%pageTitle%%", $title, $basePage);
 
