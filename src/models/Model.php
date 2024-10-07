@@ -110,11 +110,16 @@ abstract class Model
     {
         $fields = get_object_vars($this);
 
-        // Filter attributes with _ prefix
+        // Filter attributes with _ prefix and null values
         foreach ($fields as $key => $value) {
             if (strpos($key, '_') === 0) {
                 unset($fields[$key]);
             }
+
+            if (empty($value)) {
+                unset($fields[$key]);
+            }
+
         }
 
         return implode(',', array_keys($fields));
@@ -127,6 +132,10 @@ abstract class Model
         // Filter attributes with _ prefix
         foreach ($fields as $key => $value) {
             if (strpos($key, '_') === 0) {
+                unset($fields[$key]);
+            }
+
+            if (empty($value)) {
                 unset($fields[$key]);
             }
         }
@@ -259,7 +268,7 @@ abstract class Model
     }
 
 
-    public final function getId(): int
+    public final function getId(): ?int
     {
         return $this->_id;
     }
