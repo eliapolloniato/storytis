@@ -219,14 +219,14 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
     });
 
     $router->post("/chapter/(\d+)/addChoice", function ($chapterId) use ($router, $blade) {
-        if (!isset($_POST["optionText"]) || !isset($_POST["nextChapter"])) {
+        if (!isset($_POST["optionText"]) || !isset($_POST["nextChapter"]) || !isset($_POST["requiredSkillType"]) || !isset($_POST["requiredSkillLevel"])) {
             // 400 Bad Request
             header("HTTP/1.1 400 Bad Request");
-            echo "Missing optionText or nextChapter";
+            echo "Missing optionText, nextChapter, requiredSkillType or requiredSkillLevel";
             return;
         }
 
-        $newChoice = new Choice($_POST["optionText"], Chapter::get($_POST["nextChapter"]), null, Chapter::get($chapterId));
+        $newChoice = new Choice($_POST["optionText"], Chapter::get($_POST["nextChapter"]), SkillType::cases()[$_POST["requiredSkillType"]], $_POST["requiredSkillLevel"], null, Chapter::get($chapterId));
         $newChoice->save();
 
         header("Location: /admin/creator/chapter/" . $chapterId . "/edit");

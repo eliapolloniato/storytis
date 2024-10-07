@@ -17,6 +17,7 @@
                             'text' => $choice->getOptionText(),
                             'gameId' => $game->getId(),
                             'choiceId' => $choice->getId(),
+                            'character' => $game->getCharacter(),
                         ])
                     @endforeach
 

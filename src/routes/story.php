@@ -96,12 +96,25 @@ $router->mount("/story", function () use ($router, $blade) {
         $game = Game::get($gameId);
         $choice = Choice::get($choiceId);
 
+        // Check if the choice can be made
+        $character = $game->getCharacter();
+        if (!$choice->canBeChosen($character)) {
+            $_SESSION["message"] = "Non hai abbastanza punti " . $choice->getRequiredSkillType()->name . " per fare questa scelta!";
+            header("Location: /story/play/$gameId");
+            return;
+        }
+
         // Update game chapter
         $game->setChapter($choice->getNextChapter());
         $game->save();
 
         /* ----- REWARD ----- */
         $reward = $choice->getReward();
+
+        if ($reward === null) {
+            header("Location: /story/play/$gameId");
+            return;
+        }
 
         // Get reward message
         $message = $reward->getDescription();
