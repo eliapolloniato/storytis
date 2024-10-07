@@ -7,7 +7,7 @@
                     class="py-2 text-2xl text-center text-primary-500 border-b-2 border-gray-200 dark:border-gray-800 rounded-sm">
                     {{ 'Titolo della storia' }}
                 </h1>
-                <span id="story-text" class="px-3 overflow-y-auto flex-grow">
+                <span id="story-text" class="px-3 overflow-y-auto hyphens-auto flex-grow">
                     {{ 'Contenuto della storia' }}
                 </span>
                 <div id="story-options" class="pt-4 flex flex-row justify-center">
