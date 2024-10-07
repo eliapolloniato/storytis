@@ -17,14 +17,6 @@ $router->mount("/login", function () use ($router, $blade) {
             exit();
         }
 
-
-        $origin = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : "/home";
-
-        if (strpos($origin, "/login/register") !== false) {
-            header("Location: /login/register");
-            exit();
-        }
-
         // If there is an error, show it
         $error = isset($_SESSION["error"]) ? $_SESSION["error"] : null;
         unset($_SESSION["error"]);
@@ -54,7 +46,7 @@ $router->mount("/login", function () use ($router, $blade) {
                     exit();
                 }
 
-                $_SESSION["user"] = $user;
+                $_SESSION["user"] = $user->getId();
 
                 // Redirect to home if everything went fine
                 header("Location: /home");
@@ -71,14 +63,14 @@ $router->mount("/login", function () use ($router, $blade) {
                 if ($user) {
                     // Username already in use
                     $_SESSION["error"] = "Username già in uso";
-                    header("Location: /login");
+                    header("Location: /login/register");
                     exit();
                 }
 
                 $user = new User($username, $password);
-                $user->save();
+                $id = $user->save();
 
-                $_SESSION["user"] = $user;
+                $_SESSION["user"] = $id;
 
                 // Redirect to home if everything went fine
                 header("Location: /home");
@@ -92,6 +84,11 @@ $router->mount("/login", function () use ($router, $blade) {
     });
 
     $router->get("/register", function () use ($blade) {
+        if (isset($_SESSION["user"])) {
+            header("Location: /home");
+            exit();
+        }
+
         // If there is an error, show it
         $error = isset($_SESSION["error"]) ? $_SESSION["error"] : null;
         unset($_SESSION["error"]);
