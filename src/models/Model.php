@@ -95,7 +95,7 @@ abstract class Model
         }
 
         // Check if the object has been modified
-        if (hash_equals($obj->hash(), $this->hash())) {
+        if (!hash_equals($obj->hash(), $this->hash())) {
             return false;
         }
 
