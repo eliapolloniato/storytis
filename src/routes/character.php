@@ -77,6 +77,24 @@ $router->mount("/character", function () use ($router, $blade) {
         header("Location: /characters");
     });
 
+    $router->get("(\d+)/delete", function ($id) use ($router, $blade) {
+        $character = Character::get($id);
+
+        if ($character === null) {
+            echo loadPage($blade->render("error", ["message" => "Il personaggio non esiste"]), "Errore");
+            return;
+        }
+
+        if ($character->getUser()->getId() !== $_SESSION["user"]) {
+            echo loadPage($blade->render("error", ["message" => "Non puoi eliminare un personaggio che non ti appartiene"]), "Errore");
+            return;
+        }
+
+        $character->delete();
+
+        header("Location: /characters");
+    });
+
 });
 
 // Check if the user is logged in before accessing the character subroutes
