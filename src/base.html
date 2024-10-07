@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/static/img/logo.svg">
     <title>%%pageTitle%%</title>
     <link rel="stylesheet" href="/dist/tailwind.min.css">
-    <link rel="stylesheet" href="/dist/flowbite.min.css">
 
     <script src="/static/script/theme-switcher.js" defer></script>
 
     <script>
-        // It's best to inline this in `head` to avoid FOUC (flash of unstyled content) when changing pages or themes
         if (
             localStorage.getItem('color-theme') === 'dark' ||
             (!('color-theme' in localStorage) &&
@@ -23,6 +22,9 @@
         }
     </script>
 
+
+    <script src="/dist/flowbite.min.js"></script>
+
 </head>
 
 <body>
@@ -33,6 +35,5 @@
         %%content%%
     </div>
 </body>
-<script src="/dist/flowbite.min.js"></script>
 
 </html>
