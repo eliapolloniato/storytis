@@ -23,7 +23,6 @@ $router->mount('/movies', function () use ($router) {
     $router->get('/(\d+)', function ($id) {
         echo 'movie id ' . htmlentities($id);
     });
-
 });
 
 foreach (glob(__DIR__ . "/routes/*.php") as $filename) {
