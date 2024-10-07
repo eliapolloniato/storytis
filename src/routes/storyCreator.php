@@ -16,6 +16,24 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
         echo loadPage($blade->render("admin.creator", ["stories" => Story::getAll(), "admin" => true]), "Home");
     });
 
+    $router->get("/add", function () use ($router, $blade) {
+        echo loadPage($blade->render("admin.edit"), "Aggiungi storia");
+    });
+
+    $router->post("/add", function () use ($router, $blade) {
+        if (!isset($_POST["title"])) {
+            // 400 Bad Request
+            header("HTTP/1.1 400 Bad Request");
+            echo "Missing title";
+            return;
+        }
+
+        $story = new Story($_POST["title"]);
+        $story->save();
+
+        header("Location: /admin/creator/edit/" . $story->getId());
+    });
+
     $router->before("GET|POST", "/edit/(\d+)", function ($id) use ($router, $blade) {
         if (!Story::get($id)) {
             $router->trigger404();
@@ -31,21 +49,17 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
     $router->post("/edit/(\d+)", function ($id) use ($router, $blade) {
         $story = Story::get($id);
 
-        $jsonData = json_decode(file_get_contents("php://input"), true);
-
-        if (!isset($jsonData["title"])) {
+        if (!isset($_POST["title"])) {
             // 400 Bad Request
             header("HTTP/1.1 400 Bad Request");
-            echo json_encode(["error" => "Missing title"]);
+            echo "Missing title";
             return;
         }
 
-        $story->setTitle($jsonData["title"]);
+        $story->setTitle($_POST["title"]);
         $story->save();
 
-        // 200 OK
-        header("HTTP/1.1 200 OK");
-        echo json_encode(["success" => "Storia modificata con successo"]);
+        header("Location: /admin/creator/edit/" . $story->getId());
     });
 
     $router->get("/edit/(\d+)/addChapter", function ($id) use ($router, $blade) {

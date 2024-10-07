@@ -3,5 +3,6 @@
         @foreach ($stories as $story)
             @include('components.storyCard', ['story' => $story])
         @endforeach
+        @include('components.emptyStoryCard')
     </div>
 </div>
