@@ -34,6 +34,16 @@ class Character extends Model
         return $this->_skills;
     }
 
+    public function getSkill(SkillType $type): ?Skill
+    {
+        foreach ($this->getSkills() as $skill) {
+            if ($skill->getType() == $type) {
+                return $skill;
+            }
+        }
+        return null;
+    }
+
     public function getClass(): CharacterClass
     {
         return CharacterClass::cases()[$this->classId];

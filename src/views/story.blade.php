@@ -125,3 +125,8 @@
         </div>
     </div>
 </div>
+
+<!-- Message toast -->
+@isset($message)
+    @include('components.messageToast', ['message' => $message])
+@endisset

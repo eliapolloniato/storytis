@@ -85,12 +85,15 @@
                                 <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
                             </svg>
                         </a>
-                        <select id="reward"
+                        <select id="reward" name="reward"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-e-lg border-s-gray-100 dark:border-s-gray-700 border-s-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             @isset($choice)
                                 @if ($choice->getReward() !== null)
-                                    <option value="{{ $choice->getReward()->getId() }}" selected>
-                                        {{ $choice->getReward()->getDescription() }}</option>
+                                    <option value="{{ $choice->getReward()->getId() }}">
+                                        {{ '(' . $choice->getReward()->getAffectedSkillName() . ', ' . $choice->getReward()->getValue() . ') - ' . $choice->getReward()->getDescription() }}
+                                    </option>
+                                @else
+                                    <option value="" selected>Seleziona la ricompensa</option>
                                 @endif
                                 @foreach (array_filter(Reward::getAll(), static fn($e) => $e->getId() != ($choice->getReward() !== null ? $choice->getReward()->getId() : null)) as $reward)
                                     <option value="{{ $reward->getId() }}">

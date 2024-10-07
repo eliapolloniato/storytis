@@ -3,6 +3,8 @@
 require_once __DIR__ . "/./Model.php";
 require_once __DIR__ . "/../enums/SkillType.php";
 
+$config = require __DIR__ . "/../config.php";
+
 class Skill extends Model
 {
     protected int $characterId;
@@ -43,6 +45,14 @@ class Skill extends Model
 
     public function setValue(int $value)
     {
-        $this->value = $value;
+        global $config;
+        // Check if resulting value is between min and max
+        if ($value > $config['maxSkillPoints']) {
+            $this->value = $config['maxSkillPoints'];
+        } else if ($value < $config['minSkillPoints']) {
+            $this->value = $config['minSkillPoints'];
+        } else {
+            $this->value = $value;
+        }
     }
 }

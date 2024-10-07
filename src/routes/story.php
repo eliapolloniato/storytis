@@ -16,12 +16,9 @@ require_once __DIR__ . "/../models/User.php";
 require_once __DIR__ . "/../enums/CharacterClass.php";
 require_once __DIR__ . "/../enums/SkillType.php";
 require_once __DIR__ . "/../models/Game.php";
+require_once __DIR__ . "/../models/InventoryItem.php";
 
 $router->mount("/story", function () use ($router, $blade) {
-    $router->get("/", function () use ($blade) {
-        echo loadPage($blade->render("games"), "Storie");
-    });
-
     $router->get("/play/new", function() use ($router, $blade) {
         // Check if story exists
         if (!isset($_GET["storyId"]) || !is_numeric($_GET["storyId"]) || Story::get($_GET["storyId"]) === null) {
@@ -78,11 +75,19 @@ $router->mount("/story", function () use ($router, $blade) {
         $game = Game::get($gameId);
         $story = $game->getStory();
 
+        // Check if there is a message to show
+        $message = null;
+        if (isset($_SESSION["message"])) {
+            $message = $_SESSION["message"];
+            unset($_SESSION["message"]);
+        }
+
         echo loadPage($blade->render("story", [
             "story" => $story,
             "game" => $game,
             "chapter" => $game->getChapter(),
-            "choices" => $game->getChapter()->getChoices()
+            "choices" => $game->getChapter()->getChoices(),
+            "message" => $message,
         ]), $story->getTitle());
     });
 
@@ -94,6 +99,29 @@ $router->mount("/story", function () use ($router, $blade) {
         // Update game chapter
         $game->setChapter($choice->getNextChapter());
         $game->save();
+
+        /* ----- REWARD ----- */
+        $reward = $choice->getReward();
+
+        // Get reward message
+        $message = $reward->getDescription();
+        $_SESSION["message"] = $message;
+
+        // Give reward to character
+        $character = $game->getCharacter();
+
+        // If the reward is an item, add it to the inventory
+        if (Item::isItem($reward)) {
+            $ii = new InventoryItem($character, Item::get($reward->getId()));
+            $ii->save();
+        } else {
+            // If the reward is a skill, modify the character's skill
+            $skill = $character->getSkill($reward->getAffectedSkillType());
+            if ($skill !== null) {
+                $skill->setValue($skill->getValue() + $reward->getValue());
+                $skill->save();
+            }
+        }
 
         header("Location: /story/play/$gameId");
     });

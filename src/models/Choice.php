@@ -55,6 +55,11 @@ class Choice extends Model
         return Chapter::get($this->nextChapterId);
     }
 
+    public function setReward(Reward $reward)
+    {
+        $this->rewardId = $reward->getId();
+    }
+
     public function getReward(): ?Reward
     {
         if (!$this->rewardId) {
