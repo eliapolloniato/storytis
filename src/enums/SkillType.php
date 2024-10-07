@@ -5,8 +5,8 @@ enum SkillType: int
     case ITEM = 0;
     case STRENGTH = 1;
     case INTELLIGENCE = 2;
-    case AGILITY = 4;
-    case LUCK = 5;
+    case AGILITY = 3;
+    case LUCK = 4;
 
     public static function getOnlySkills(): array
     {
