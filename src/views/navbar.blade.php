@@ -4,7 +4,7 @@
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="{{ $config['baseUrl'] }}" class="flex items-center space-x-3 rtl:space-x-reverse w-10">
             <img src="/static/img/logo.svg" class="h-8 w-8" alt="Storytis Logo">
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">{{ $title }}</span>
+            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Storytis</span>
         </a>
 
         <!-- Collapsible menu on mobile -->

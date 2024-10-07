@@ -11,6 +11,7 @@ $router = new \Bramus\Router\Router();
 
 
 /* MOUNT ROUTES */
+<<<<<<< HEAD
 
 $router->mount('/movies', function () use ($router) {
 
@@ -25,17 +26,21 @@ $router->mount('/movies', function () use ($router) {
     });
 });
 
+=======
+>>>>>>> refs/rewritten/develop
 foreach (glob(__DIR__ . "/routes/*.php") as $filename) {
     require $filename;
 }
 
+/* 404 */
 $router->set404(function () use ($blade) {
     header('HTTP/1.1 404 Not Found');
     echo loadPage($blade->render("404"), "404");
 });
 
+/* LANDING PAGE */
 $router->get("/", function () use ($blade) {
-    header('Location: /home');
+    echo loadPage($blade->render("landing"), "Storytis");
 });
 
 return $router;

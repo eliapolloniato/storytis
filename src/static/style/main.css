@@ -2,22 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
-    padding: 0;
+@layer base {
+    html {
+        margin: 0;
+        padding: 0;
 
-    @apply bg-gray-100;
-    @apply text-gray-900;
-}
+        @apply font-sans;
 
-html.dark {
-    @apply bg-gray-900;
-    @apply text-white;
-}
+        @apply bg-gray-100;
+        @apply text-gray-900;
+    }
 
-#root {
-    /* Margin for navbar */
-    @apply pt-20;
-    @apply h-screen
+    html.dark {
+        @apply bg-gray-900;
+        @apply text-white;
+    }
+
+    #root {
+        /* Margin for navbar */
+        @apply pt-20;
+        @apply h-dvh
+    }
 }
