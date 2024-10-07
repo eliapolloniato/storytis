@@ -33,4 +33,5 @@ return array(
     "maxRewardValue" => 10,
     "maxSkillPoints" => 10,
     "minSkillPoints" => 0,
+    "initialAvailablePoints" => 15,
 );
