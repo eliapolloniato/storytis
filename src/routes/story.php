@@ -40,6 +40,11 @@ $router->mount("/story", function () use ($router, $blade) {
     $router->before("GET|POST", "/play/(\d+)/(\d+).*", function ($gameId, $choiceId) use ($router) {
         $choice = Choice::get($choiceId);
 
+        if (!$choice) {
+            $router->trigger404();
+            return;
+        }
+
         // Check if chapter belongs to story
         $story = Game::get($gameId)->getStory();
         if ($choice->getNextChapter()->getStory() != $story) {
