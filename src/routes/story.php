@@ -96,6 +96,14 @@ $router->mount("/story", function () use ($router, $blade) {
         $game = Game::get($gameId);
         $choice = Choice::get($choiceId);
 
+        // Check if the choice can be made
+        $character = $game->getCharacter();
+        if (!$choice->canBeChosen($character)) {
+            $_SESSION["message"] = "Non hai abbastanza punti " . $choice->getRequiredSkillType()->name . " per fare questa scelta!";
+            header("Location: /story/play/$gameId");
+            return;
+        }
+
         // Update game chapter
         $game->setChapter($choice->getNextChapter());
         $game->save();
@@ -104,7 +112,11 @@ $router->mount("/story", function () use ($router, $blade) {
         $reward = $choice->getReward();
 
         if ($reward === null) {
+<<<<<<< HEAD
+            header("Location: /story/play/$gameId");
+=======
             echo loadPage($blade->render("error", ["message" => "La ricompensa non esiste!"]), "Errore");
+>>>>>>> refs/rewritten/develop-2
             return;
         }
 

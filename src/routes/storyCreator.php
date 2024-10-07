@@ -205,20 +205,28 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
         header("Location: /admin/creator/chapter/" . $choice->getChapter()->getId() . "/edit");
     });
 
+    $router->get("/choice/(\d+)/delete", function ($choiceId) use ($router, $blade) {
+        $choice = Choice::get($choiceId);
+        $chapter = $choice->getChapter();
+        $choice->delete();
+
+        header("Location: /admin/creator/chapter/" . $chapter->getId() . "/edit");
+    });
+
     $router->get("/chapter/(\d+)/addChoice", function ($chapterId) use ($router, $blade) {
         $chapter = Chapter::get($chapterId);
         echo loadPage($blade->render("admin.editChoice", ["chapter" => $chapter]), "Aggiungi scelta");
     });
 
     $router->post("/chapter/(\d+)/addChoice", function ($chapterId) use ($router, $blade) {
-        if (!isset($_POST["optionText"]) || !isset($_POST["nextChapter"])) {
+        if (!isset($_POST["optionText"]) || !isset($_POST["nextChapter"]) || !isset($_POST["requiredSkillType"]) || !isset($_POST["requiredSkillLevel"])) {
             // 400 Bad Request
             header("HTTP/1.1 400 Bad Request");
-            echo "Missing optionText or nextChapter";
+            echo "Missing optionText, nextChapter, requiredSkillType or requiredSkillLevel";
             return;
         }
 
-        $newChoice = new Choice($_POST["optionText"], Chapter::get($_POST["nextChapter"]), null, Chapter::get($chapterId));
+        $newChoice = new Choice($_POST["optionText"], Chapter::get($_POST["nextChapter"]), SkillType::cases()[$_POST["requiredSkillType"]], $_POST["requiredSkillLevel"], null, Chapter::get($chapterId));
         $newChoice->save();
 
         header("Location: /admin/creator/chapter/" . $chapterId . "/edit");
