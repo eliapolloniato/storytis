@@ -1,0 +1,44 @@
+<?php
+
+require_once __DIR__ . "/./Model.php";
+
+class User extends Model
+{
+    protected string $name;
+    protected string $password;
+
+    public function __construct(string $name, string $password)
+    {
+        parent::__construct();
+        $this->name = $name;
+        // hash password with bcrypt
+        $this->password = self::hashPassword($password);
+        // $this->save();
+    }
+
+    public function isSaved(): bool
+    {
+        // If the user has an id, it means it was saved
+        return isset($this->_id);
+    }
+
+    private static function hashPassword(string $password): string
+    {
+        return password_hash($password, PASSWORD_BCRYPT);
+    }
+
+    public function verifyPassword(string $password): bool
+    {
+        return password_verify($password, $this->password);
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getHashedPassword(): string
+    {
+        return $this->password;
+    }
+}
