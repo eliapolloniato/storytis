@@ -67,7 +67,7 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
         $chapter = new Chapter($story, $_POST["title"], $_POST["content"]);
         $chapter->save();
 
-        header("Location: /admin/creator/edit/" . $story->getId());
+        header("Location: /admin/creator/chapter/" . $chapter->getId() . "/edit");
     });
 
     $router->before("GET|POST", "/chapter/(\d+)/.*", function ($chapterId) use ($router, $blade) {
@@ -99,7 +99,7 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
         $chapter->setContent($content);
         $chapter->save();
 
-        header("Location: /admin/creator/edit/" . $chapter->getStory()->getId());
+        header("Location: /admin/creator/chapter/" . $chapter->getId() . "/edit");
     });
 
     $router->get("/chapter/(\d+)/delete", function ($chapterId) use ($router, $blade) {
