@@ -16,12 +16,6 @@ class User extends Model
         // $this->save();
     }
 
-    public function isSaved(): bool
-    {
-        // If the user has an id, it means it was saved
-        return isset($this->_id);
-    }
-
     private static function hashPassword(string $password): string
     {
         return password_hash($password, PASSWORD_BCRYPT);

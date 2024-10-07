@@ -13,13 +13,68 @@ abstract class Model
         $this->_db = $db;
     }
 
-    public function save()
+    private function hash(): string
     {
+        $fields = get_object_vars($this);
+
+        // Filter attributes with _ prefix
+        foreach ($fields as $key => $value) {
+            if (strpos($key, '_') === 0) {
+                unset($fields[$key]);
+            }
+        }
+
+        return md5(implode(',', array_values($fields)));
+    }
+
+    public function save(): int
+    {
+        // Check if the object has been modified
+        if ($this->isSaved()) {
+            return $this->_id;
+        }
+
+        // If the object is present in the database, update it
+        if ($this->_id !== null && self::get($this->_id) !== null) {
+            $table = $this->getTableName();
+            $fields = $this->getFields();
+            $values = $this->getValues();
+            $query = $this->_db->prepare("UPDATE $table SET ($fields) VALUES ($values) WHERE id = :id");
+            $query->execute(['id' => $this->_id]);
+
+            return $this->_id;
+        }
+
+        // Otherwise, insert it
         $table = $this->getTableName();
         $fields = $this->getFields();
         $values = $this->getValues();
         $query = $this->_db->prepare("INSERT INTO $table ($fields) VALUES ($values)");
         $query->execute();
+
+        // Set the id of the object
+        $this->_id = $this->_db->lastInsertId();
+
+        return $this->_id;
+    }
+
+    public function isSaved(): bool
+    {
+        if ($this->_id === null) {
+            return false;
+        }
+
+        $obj = self::get($this->_id);
+
+        // Check if the object exists
+        if ($obj === null) {
+            return false;
+        }
+
+        // Check if the object has been modified
+        if (hash_equals($obj->hash(), $this->hash())) {
+            return false;
+        }
     }
 
     protected function getFields()
@@ -50,7 +105,7 @@ abstract class Model
         return "'" . implode("','", array_values($fields)) . "'";
     }
 
-    public final static function getTableName()
+    public static function getTableName()
     {
         return get_called_class() . "s";
     }
@@ -122,5 +177,10 @@ abstract class Model
         global $db;
         $query = $db->prepare("DELETE FROM " . static::getTableName() . " WHERE id = :id");
         $query->execute(['id' => $id]);
+    }
+
+    public final function getId(): int
+    {
+        return $this->_id;
     }
 }
