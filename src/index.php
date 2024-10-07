@@ -10,6 +10,19 @@ $router = new \Bramus\Router\Router();
 
 $blade = new \Jenssegers\Blade\Blade("views", "cache");
 
+function loadPage($content, $title = "")
+{
+    global $config, $blade;
+
+    $basePage = file_get_contents($config["basePage"]);
+
+    $basePage = str_replace("%%navbar%%", $blade->render("navbar", ["title" => $title]), $basePage);
+    $basePage = str_replace("%%content%%", $content, $basePage);
+    $basePage = str_replace("%%pageTitle%%", $title, $basePage);
+
+    return $basePage;
+}
+
 $router->get("/", function () {
     global $blade;
     echo loadPage($blade->render("home", ["text" => "Hello World!"]), "Home");

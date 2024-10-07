@@ -1,14 +1,38 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>%%pageTitle%%</title>
     <link rel="stylesheet" href="/dist/tailwind.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
+
+    <script src="/static/script/theme-switcher.js" defer></script>
+
+    <script>
+        // It's best to inline this in `head` to avoid FOUC (flash of unstyled content) when changing pages or themes
+        if (
+            localStorage.getItem('color-theme') === 'dark' ||
+            (!('color-theme' in localStorage) &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
 </head>
+
 <body>
+    <div id="navbar">
+        %%navbar%%
+    </div>
     <div id="root">
         %%content%%
     </div>
 </body>
+<script src="/dist/flowbite.min.js"></script>
+
 </html>
