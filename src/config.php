@@ -13,7 +13,8 @@ return array(
         "admin" => "/admin",
         "adminCreator" => "/admin/creator",
         "editStory" => "/admin/creator/edit/",
-        "editChapter" => "/admin/creator/edit/chapter/",
-        "deleteChapter" => "/admin/creator/delete/chapter/",
-    )
+        "chapter" => "/admin/creator/chapter/",
+        "choice" => "/admin/creator/choice/",
+    ),
+    "maxChoices" => 4,
 );

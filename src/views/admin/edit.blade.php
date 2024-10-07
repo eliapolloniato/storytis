@@ -1,8 +1,8 @@
-<div class="mx-5">
-    <h1 class="text-2xl font-bold">Modifica storia: <span
+<div class="mx-5 md:m-auto md:w-1/2 md:max-w-xl">
+    <h1 class="text-2xl font-bold">Modifica storia: <span id="storyTitle"
             class="text-2xl font-bold text-primary-500">{{ $story->getTitle() }}</span></h1>
 
-    <div class="mt-5 w-full md:w-2/6">
+    <div class="mt-5 w-full">
         <div>
             <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Titolo</label>
             <div class="flex flex-row">
@@ -31,17 +31,35 @@
                         .catch(err => console.error(err))
                         .then(res => res.json())
                         .then(data => {
-                            console.log(data);
+                            window.location.reload();
                         })
                 });
             </script>
         </div>
 
+        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+
+        <!-- Capitoli -->
         <div class="my-5 overflow-y-auto">
-            <!-- Capitoli -->
+            <h1 class="text-xl font-bold">Capitoli</h1>
             @foreach ($story->getChapters() as $chapter)
-                @include('components.chapter', ['chapter' => $chapter])
+                @include('components.chapterCard', ['chapter' => $chapter])
             @endforeach
+
+            <!-- Aggiungi capitolo -->
+            <div class="w-full flex flex-row justify-center">
+                <a href="{{ $config['routes']['editStory'] . $story->getId() . '/addChapter' }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
+                        class="size-8 fill-primary-600 dark:fill-primary-500">
+                        <path
+                            d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                    </svg>
+                </a>
+            </div>
         </div>
+
+        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+
+
+
     </div>
-</div>

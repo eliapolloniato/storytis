@@ -229,12 +229,17 @@ abstract class Model
         return $obj;
     }
 
+    public final function delete()
+    {
+        static::deleteId($this->_id);
+    }
+
     public final static function get(int $id): ?Model
     {
         return static::getByAttribute('id', $id);
     }
 
-    protected static function delete(int $id)
+    protected static function deleteId(int $id)
     {
         global $db;
         $query = $db->prepare("DELETE FROM " . static::getTableName() . " WHERE id = :id");
