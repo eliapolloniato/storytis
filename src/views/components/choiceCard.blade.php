@@ -1,7 +1,7 @@
 @isset($choice)
     <a class="m-2 flex flex-col items-center justify-center size-20 border-2 border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
         href="{{ $config['routes']['choice'] . $choice->getId() . '/edit' }}">
-        <p>{{ $choice->getOptionText() }}</p>
+        <p class="text-center">{{ $choice->getOptionText() }}</p>
     </a>
 @else
     <a class="m-2 flex flex-col items-center justify-center size-20 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
