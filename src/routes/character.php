@@ -17,12 +17,23 @@ require_once __DIR__ . "/../enums/CharacterClass.php";
 require_once __DIR__ . "/../enums/SkillType.php";
 require_once __DIR__ . "/../models/Game.php";
 
+$config = require __DIR__ . "/../config.php";
+
 $router->mount("/character", function () use ($router, $blade) {
     $router->get("/add", function () use ($blade) {
         echo loadPage($blade->render("characterCreator"), "Creazione personaggio");
     });
 
     $router->post("/add", function () use ($router, $blade) {
+        global $config;
+
+        // Check if the user has already reached the max number of characters
+        $characters = Character::getByUser(User::get($_SESSION["user"]));
+        if (count($characters) >= $config["maxCharacters"]) {
+            echo loadPage($blade->render("error", ["message" => "Hai già raggiunto il numero massimo di personaggi"]), "Errore");
+            return;
+        }
+
 
         // Check if the name is set
         if (!isset($_POST["characterName"]) || empty($_POST["characterName"])) {
