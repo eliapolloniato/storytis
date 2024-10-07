@@ -1,13 +1,5 @@
 <?php
 
-use Monolog\Level;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-
-
-$log = new Logger('name');
-$log->pushHandler(new StreamHandler('your.log', Level::Debug));
-
 $db = require __DIR__ . "/../db/db.php";
 
 abstract class Model
@@ -70,9 +62,6 @@ abstract class Model
 
             $query = $this->_db->prepare("UPDATE $table SET " . implode(',', $keyValuePairs) . " WHERE id = :id");
 
-            global $log;
-            $log->debug("update: " . $query->queryString);
-
             $query->execute(['id' => $this->_id, ...$this->get_object_public_vars()]);
 
             return $this->_id;
@@ -83,9 +72,6 @@ abstract class Model
         $fields = $this->getFields();
         $values = $this->getValues();
         $query = $this->_db->prepare("INSERT INTO $table ($fields) VALUES ($values)");
-
-        global $log;
-        $log->debug("inset: " . $query->queryString);
 
         $query->execute();
 
