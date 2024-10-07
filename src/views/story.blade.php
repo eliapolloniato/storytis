@@ -1,4 +1,4 @@
-<div class="w-full h-full p-5">
+<div class="w-full h-full">
     <div class="w-full h-full max-w-screen-xl flex flex-col md:flex-row mx-auto z-0">
         <div class="p-2 h-3/5 md:h-full md:w-1/2 z-10">
             <div id="story-content"
@@ -33,38 +33,65 @@
             </div>
         </div>
         <div class="flex flex-row h-2/5 md:h-full md:flex-col md:w-1/2 ">
-            <div class="p-2 w-1/2 md:w-full md:h-2/6 z-10">
-            <div id="character-info" class="p-2 h-full w-full md:border-2 border-gray-200 dark:border-gray-800 rounded-lg shadow-lg flex flex-col md:flex-row">
-                <!-- Immagine del personaggio -->
-                <div class="w-full h-1/2 md:w-1/3">
-                    <!--codice per l'immagine del personaggio -->
-                    <img src="path/to/character-image.jpg" alt="Character Image" class="w-full h-full object-cover rounded-lg">
-                </div>
-                <!-- Informazioni del personaggio -->
-                <div class="w-full h-1/2 md:w-2/3 md:pl-2 flex flex-col justify-between">
-                    <!-- Nome del personaggio -->
-                    <h2 class="text-xl font-bold mb-2 text-primary-500">Nome personaggio: </h2>
+            <div class="p-2 w-1/2 min-h-56 md:w-full md:h-2/6 z-10">
+                <div id="character-info"
+                    class="p-2 h-full w-full border-2 border-gray-200 dark:border-gray-800 rounded-lg shadow-lg flex flex-col items-center">
+                    <div class="mb-1 md:my-4 w-full flex items-center flex-row justify-between px-4">
+                        <!-- Immagine del personaggio -->
+                        <img src="https://placehold.co/400x400" alt="Character Image"
+                            class="size-14 rounded-full object-cover">
+                        <!-- Nome del personaggio -->
+                        <h2 class="text-sm font-bold mb-1 text-primary-500 text-center">{{ 'nome' }}</h2>
+                    </div>
+                    <!-- Informazioni del personaggio -->
                     <!-- Statistiche del personaggio -->
-                    <div class="flex flex-wrap">
-                        <div class="w-full md:w-1/2">
-                            <p>Forza:</p>
-                            <button type="button" class="bg-orange-500 text-black px-2 rounded-full">+</button>
+                    <div class="px-4 w-full flex flex-col md:flex-row md:flex-wrap justify-center flex-grow">
+                        <div class="w-full md:px-2 md:w-1/2">
+                            <div class="flex flex-row justify-between">
+                                <p>Forza:</p>
+                                <span>5</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700">
+                                <div class="bg-primary-600 h-1.5 rounded-full dark:bg-primary-500" style="width: 20%">
+                                </div>
+                            </div>
                         </div>
-                        <div class="w-full md:w-1/2">
-                            <p>Abilità:</p>
-                            <button type="button" class="bg-orange-500 text-black px-2 rounded-full">+</button>
+                        <div class="w-full md:px-2 md:w-1/2">
+                            <div class="flex flex-row justify-between">
+                                <p>Intelligenza:</p>
+                                <span>5</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700">
+                                <div class="bg-primary-600 h-1.5 rounded-full dark:bg-primary-500" style="width: 75%">
+                                </div>
+                            </div>
                         </div>
-                        <div class="w-full md:w-1/2">
-                            <p>Intelligenza:</p>
-                            <button type="button" class="bg-orange-500 text-black px-2 rounded-full">+</button>
+                        <div class="w-full md:px-2 md:w-1/2">
+                            <div class="flex flex-row justify-between">
+                                <p>Abilità:</p>
+                                <span>5</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700">
+                                <div class="bg-primary-600 h-1.5 rounded-full dark:bg-primary-500" style="width: 35%">
+                                </div>
+                            </div>
                         </div>
-                        <div class="w-full md:w-1/2">
-                            <p>Esperienza:</p>
-                            <button type="button" class="bg-orange-500 text-black px-2 rounded-full">+</button>
+                        <div class="w-full md:px-2 md:w-1/2">
+                            <div class="flex flex-row justify-between">
+                                <p>Esperienza:</p>
+                                <span>5</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700">
+                                <div class="bg-primary-600 h-1.5 rounded-full dark:bg-primary-500" style="width: 80%">
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <button type="button"
+                        class="py-1.5 px-3 m-1 text-sm font-medium w-full text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-primary-400 dark:hover:bg-gray-700">
+                        Modifica
+                    </button>
                 </div>
-            </div>
             </div>
             <div class="p-2 w-1/2 md:w-full md:h-4/6 z-10">
                 <div id="inventory"
