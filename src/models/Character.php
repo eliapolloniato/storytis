@@ -71,4 +71,9 @@ class Character extends Model
     {
         return self::getAllBy("userId", $user->getId());
     }
+
+    public function getInventory(): array
+    {
+        return InventoryItem::getAllBy("characterId", $this->getId());
+    }
 }

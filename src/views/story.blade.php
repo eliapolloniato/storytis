@@ -2,7 +2,7 @@
     <div class="w-full h-full max-w-screen-xl flex flex-col md:flex-row mx-auto z-0">
         <div class="p-2 h-3/5 md:h-full md:w-1/2 z-10">
             <div id="story-content"
-                class="p-2 h-full w-full flex flex-col justify-stretch border-2 border-gray-200 dark:border-gray-800 rounded-lg shadow-lg">
+                class="p-2 h-full w-full flex flex-col justify-stretch border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg">
                 <h1
                     class="py-2 text-2xl text-center text-primary-500 border-b-2 border-gray-200 dark:border-gray-800 rounded-sm">
                     {{ $chapter->getTitle() }}
@@ -26,7 +26,7 @@
         <div class="flex flex-row h-2/5 md:h-full md:flex-col md:w-1/2 ">
             <div class="p-2 w-1/2 min-h-56 md:w-full md:h-2/5 z-10">
                 <div id="character-info"
-                    class="p-2 h-full w-full border-2 border-gray-200 dark:border-gray-800 rounded-lg shadow-lg flex flex-col items-center">
+                    class="p-2 h-full w-full border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg flex flex-col items-center">
                     <div class="mb-1 md:my-4 w-full flex items-center flex-row justify-between px-4">
                         <!-- Immagine del personaggio -->
                         <img src="https://placehold.co/400x400" alt="Character Image"
@@ -60,7 +60,20 @@
             </div>
             <div class="p-2 w-1/2 md:w-full md:h-3/5 z-10">
                 <div id="inventory"
-                    class="p-2 h-full w-full border-2 border-gray-200 dark:border-gray-800 rounded-lg shadow-lg">
+                    class="p-2 h-full w-full border border-gray-200 dark:border-gray-800 rounded-lg shadow-lg">
+                    @if (count($game->getCharacter()->getInventory()) == 0)
+                        <div class="w-full h-full flex justify-center items-center text-center text-gray-400">
+                            <span>Non hai ancora oggetti nell'inventario</span>
+                        </div>
+                    @endif
+                    <div class="w-full flex flex-row flex-wrap items-start">
+                        @foreach ($game->getCharacter()->getInventory() as $item)
+                            <div
+                                class="m-2 size-10 transition hover:bg-slate-300 hover:scale-150 hover:rotate-12 dark:hover:bg-slate-600 border-gray-300 dark:border-gray-700 border rounded-md flex justify-center items-center text-center">
+                                <span class="cursor-default">{{ $item->getItem()->getItemText() }}</span>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>

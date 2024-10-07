@@ -238,7 +238,7 @@ abstract class Model
         return $obj;
     }
 
-    public final function delete()
+    public function delete()
     {
         static::deleteId($this->_id);
     }

@@ -67,4 +67,14 @@ class Game extends Model
         return parent::getAllBy("userId", $user->getId());
     }
 
+    public function delete()
+    {
+        // Delete all inventory items
+        foreach ($this->getCharacter()->getInventory() as $item) {
+            $item->delete();
+        }
+
+        parent::delete();
+    }
+
 }
