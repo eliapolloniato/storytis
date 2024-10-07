@@ -4,6 +4,8 @@ require_once __DIR__ . "/./Model.php";
 require_once __DIR__ . "/./Game.php";
 require_once __DIR__ . "/./Character.php";
 
+$config = require __DIR__ . "/../config.php";
+
 class User extends Model
 {
     protected string $name;
@@ -62,5 +64,11 @@ class User extends Model
             }
         }
         return null;
+    }
+
+    public function isAdmin(): bool
+    {
+        global $config;
+        return $this->getId() === $config["adminUser"];
     }
 }
