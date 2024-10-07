@@ -21,7 +21,7 @@
 
     <div class="mt-5 w-full">
         @isset($story)
-            <form method="POST" action="./edit">
+            <form method="POST" action="./{{ $story->getId() }}">
             @else
                 <form method="POST" action="./add">
                 @endisset
