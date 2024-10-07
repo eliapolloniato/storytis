@@ -21,6 +21,6 @@
     #root {
         /* Margin for navbar */
         @apply pt-20;
-        @apply h-screen
+        @apply h-dvh
     }
 }
