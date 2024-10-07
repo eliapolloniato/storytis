@@ -41,8 +41,10 @@ abstract class Model
                 unset($fields[$key]);
                 continue;
             }
-
-            $fields[$key] = addslashes($value);
+            
+            if ($value !== null) {
+                $fields[$key] = addslashes($value);
+            }
         }
         
 
