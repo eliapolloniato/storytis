@@ -13,7 +13,7 @@ $config = require __DIR__ . "/../config.php";
 
 $router->mount("/admin/creator", function () use ($router, $blade) {
     $router->get("/", function () use ($blade) {
-        echo loadPage($blade->render("admin.creator", ["stories" => Story::getAll(), "admin" => true]), "Home");
+        echo loadPage($blade->render("admin.creator", ["stories" => Story::getAll(), "admin" => true]), "Creatore");
     });
 
     $router->get("/add", function () use ($router, $blade) {
