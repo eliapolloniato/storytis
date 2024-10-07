@@ -474,4 +474,7 @@ composer.lock
 *.scss.map
 
 # Blade cache
-src/cache
+cache
+
+# SASS Compiler
+node_modules/
