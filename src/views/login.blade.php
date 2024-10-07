@@ -35,7 +35,7 @@
                         @if ($action == 'register')
                             Registrati
                         @else
-                            Login in
+                            Log in
                         @endif
                     </button>
 
