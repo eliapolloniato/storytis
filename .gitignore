@@ -478,3 +478,6 @@ cache
 
 # SASS Compiler
 node_modules/
+
+# ENV
+.env
