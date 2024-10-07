@@ -246,6 +246,15 @@ abstract class Model
         $query->execute(['id' => $id]);
     }
 
+    /**
+     * Compare 2 Model objects
+     */
+    public function __compareTo(Model $other): int
+    {
+        return $this->getId() <=> $other->getId();
+    }
+
+
     public final function getId(): int
     {
         return $this->_id;
