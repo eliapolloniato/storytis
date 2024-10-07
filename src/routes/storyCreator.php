@@ -36,6 +36,34 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
         header("Location: /admin/creator/edit/" . $story->getId());
     });
 
+    $router->get("/delete", function () use ($router, $blade) {
+        if (!isset($_GET["id"])) {
+            // 400 Bad Request
+            header("HTTP/1.1 400 Bad Request");
+            echo "Missing id";
+            return;
+        }
+
+        if (!is_numeric($_GET["id"])) {
+            // 400 Bad Request
+            header("HTTP/1.1 400 Bad Request");
+            echo "Invalid id";
+            return;
+        }
+
+        if (!Story::get($_GET["id"])) {
+            // 404 Not Found
+            header("HTTP/1.1 404 Not Found");
+            echo "Story not found";
+            return;
+        }
+
+        $story = Story::get($_GET["id"]);
+        $story->delete();
+
+        header("Location: /admin/creator");
+    });
+
     $router->before("GET|POST", "/edit/(\d+)", function ($id) use ($router, $blade) {
         if (!Story::get($id)) {
             $router->trigger404();

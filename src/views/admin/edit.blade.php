@@ -83,6 +83,17 @@
                     </div>
                 </div>
 
+                <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+
+                <!-- Elimina storia -->
+
+                <div class="my-5">
+                    <h1 class="text-xl font-bold">Elimina storia</h1>
+                    <a href="{{ $config['routes']['deleteStory'] . '?id=' . $story->getId() }}"
+                        class="my-3 mx-auto w-2/3 flex items-center justify-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Elimina</a>
+
+                </div>
+
             @endisset
 
     </div>
