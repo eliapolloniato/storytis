@@ -10,6 +10,9 @@ $router = new \Bramus\Router\Router();
 
 $blade = new \Jenssegers\Blade\Blade("views", "cache");
 
+// Global vars
+$blade->share("config", $config);
+
 function loadPage($content, $title = "")
 {
     global $config, $blade;

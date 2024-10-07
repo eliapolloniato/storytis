@@ -15,3 +15,8 @@ html.dark {
     @apply bg-gray-900;
     @apply text-white;
 }
+
+#root {
+    /* Margin for navbar */
+    @apply mt-20;
+}

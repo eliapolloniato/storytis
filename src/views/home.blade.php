@@ -1,4 +1,3 @@
-<div class="dark:bg-gray-800 dark:text-white">
+<div class="w-full h-10 flex items-center justify-center">
     {{ $text }}
-
 </div>

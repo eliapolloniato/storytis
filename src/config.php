@@ -5,4 +5,5 @@ return array(
     "cache" => __DIR__ . "/../cache",
     "dist" => __DIR__ . "/../dist",
     "basePage" => __DIR__ . "/base.html",
+    "baseUrl" => "http://contabile.e-fermi.it:" . $_SERVER["SERVER_PORT"],
 );
