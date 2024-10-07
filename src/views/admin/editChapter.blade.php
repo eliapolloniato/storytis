@@ -1,4 +1,23 @@
 <div class="mx-5 md:m-auto md:w-1/2 md:max-w-xl">
+    @include('components.breadcrumbs', [
+        'path' => [
+            [
+                'title' => 'Creator',
+                'url' => $config['routes']['adminCreator'],
+            ],
+            [
+                'title' => isset($chapter) ? $chapter->getStory()->getTitle() : $story->getTitle(),
+                'url' =>
+                    $config['routes']['editStory'] .
+                    (isset($chapter) ? $chapter->getStory()->getId() : $story->getId()),
+            ],
+            [
+                'title' => isset($chapter) ? $chapter->getTitle() : 'Nuovo capitolo',
+                'url' => '#',
+            ],
+        ],
+    ])
+
     @isset($chapter)
         <h1 class="text-2xl font-bold mb-2">Modifica capitolo: <span id="chapterTitle"
                 class="text-2xl font-bold text-primary-500">{{ $chapter->getTitle() }}</span></h1>
@@ -6,7 +25,7 @@
         <h1 class="text-2xl font-bold mb-2">Aggiungi capitolo</h1>
     @endisset
 
-    <div class="w-full md:w-4/6 md:max-w-xl">
+    <div class="w-full">
 
         @isset($chapter)
             <form method="POST" action="./edit">
@@ -44,7 +63,7 @@
                 <h1 class="text-xl font-bold mb-2">Scelte</h1>
                 <div class="flex flex-row flex-wrap justify-around">
                     @foreach ($chapter->getChoicesWithEmpty() as $choice)
-                        @include('components.choiceCard', ['choice' => $choice])
+                        @include('components.choiceCard', ['choice' => $choice, 'chapter' => $chapter])
                     @endforeach
                 </div>
 

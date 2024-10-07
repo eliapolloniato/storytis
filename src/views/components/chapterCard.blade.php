@@ -2,7 +2,7 @@
     <div
         class="w-full my-2 py-2 px-4 border-2 border-gray-200 dark:border-gray-800 rounded-lg shadow-lg flex flex-row justify-between items-center">
         <h1 class="text2xl font-black uppercase w-1/3">{{ $chapter->getTitle() }}</h1>
-        <p>Scelte: <span class="bold">{{ count($chapter->getChoices()) }}</span></p>
+        <p>Scelte: <span class="font-bold">{{ count($chapter->getChoices()) }}/{{ $config['maxChoices'] }}</span></p>
         <div class="flex flex-row">
             <a class="mx-1 flex flex-row items-center"
                 href="{{ $config['routes']['chapter'] . $chapter->getId() . '/edit' }}"><svg

@@ -1,4 +1,17 @@
 <div class="mx-5 md:m-auto md:w-1/2 md:max-w-xl">
+    @include('components.breadcrumbs', [
+        'path' => [
+            [
+                'title' => 'Creator',
+                'url' => $config['routes']['adminCreator'],
+            ],
+            [
+                'title' => $story->getTitle(),
+                'url' => '#',
+            ],
+        ],
+    ])
+
     <h1 class="text-2xl font-bold">Modifica storia: <span id="storyTitle"
             class="text-2xl font-bold text-primary-500">{{ $story->getTitle() }}</span></h1>
 

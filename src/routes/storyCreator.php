@@ -50,7 +50,7 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
 
     $router->get("/edit/(\d+)/addChapter", function ($id) use ($router, $blade) {
         $story = Story::get($id);
-        echo loadPage($blade->render("admin.editChapter"), "Aggiungi capitolo");
+        echo loadPage($blade->render("admin.editChapter", ["story" => $story]), "Aggiungi capitolo");
     });
 
     $router->post("/edit/(\d+)/addChapter", function ($id) use ($router, $blade) {
@@ -120,6 +120,42 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
     $router->get("/choice/(\d+)/edit", function ($choiceId) use ($router, $blade) {
         $choice = Choice::get($choiceId);
         echo loadPage($blade->render("admin.editChoice", ["choice" => $choice]), "Modifica scelta");
+    });
+
+    $router->post("/choice/(\d+)/edit", function ($choiceId) use ($router, $blade) {
+        $choice = Choice::get($choiceId);
+
+        if (!isset($_POST["optionText"]) || !isset($_POST["nextChapter"])) {
+            // 400 Bad Request
+            header("HTTP/1.1 400 Bad Request");
+            echo "Missing optionText or nextChapter";
+            return;
+        }
+
+        $choice->setOptionText($_POST["optionText"]);
+        $choice->setNextChapterId($_POST["nextChapter"]);
+        $choice->save();
+
+        header("Location: /admin/creator/chapter/" . $choice->getChapter()->getId() . "/edit");
+    });
+
+    $router->get("/chapter/(\d+)/addChoice", function ($chapterId) use ($router, $blade) {
+        $chapter = Chapter::get($chapterId);
+        echo loadPage($blade->render("admin.editChoice", ["chapter" => $chapter]), "Aggiungi scelta");
+    });
+
+    $router->post("/chapter/(\d+)/addChoice", function ($chapterId) use ($router, $blade) {
+        if (!isset($_POST["optionText"]) || !isset($_POST["nextChapter"])) {
+            // 400 Bad Request
+            header("HTTP/1.1 400 Bad Request");
+            echo "Missing optionText or nextChapter";
+            return;
+        }
+
+        $newChoice = new Choice($_POST["optionText"], Chapter::get($_POST["nextChapter"]), null, Chapter::get($chapterId));
+        $newChoice->save();
+
+        header("Location: /admin/creator/chapter/" . $chapterId . "/edit");
     });
 });
 

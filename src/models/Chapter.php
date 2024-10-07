@@ -73,6 +73,8 @@ class Chapter extends Model
             $emptyChoices = array_fill(0, $config['maxChoices'] - count($choices), null);
             return array_merge($choices, $emptyChoices);
         }
+
+        return $choices;
     }
 
     public function getStory(): ?Story

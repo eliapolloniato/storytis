@@ -40,6 +40,11 @@ class Choice extends Model
         return $this->optionText;
     }
 
+    public function setOptionText(string $optionText)
+    {
+        $this->optionText = $optionText;
+    }
+
     public function getChapter(): ?Chapter
     {
         return Chapter::get($this->chapterId);
