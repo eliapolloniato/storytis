@@ -169,18 +169,34 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
     $router->post("/choice/(\d+)/edit", function ($choiceId) use ($router, $blade) {
         $choice = Choice::get($choiceId);
 
-        if (!isset($_POST["optionText"]) || !isset($_POST["nextChapter"]) || !isset($_POST["reward"])) {
+        if (!isset($_POST["optionText"]) || !isset($_POST["nextChapter"])) {
             // 400 Bad Request
             header("HTTP/1.1 400 Bad Request");
             echo "Missing optionText, nextChapter or reward";
             return;
         }
 
-        if (!is_numeric($_POST["nextChapter"]) || !is_numeric($_POST["reward"])) {
+        if (!is_numeric($_POST["nextChapter"])) {
             // 400 Bad Request
             header("HTTP/1.1 400 Bad Request");
             echo "Invalid nextChapter or reward";
             return;
+        }
+
+        if (!empty($_POST["reward"])) {
+            if (!is_numeric($_POST["reward"])) {
+                // 400 Bad Request
+                header("HTTP/1.1 400 Bad Request");
+                echo "Invalid reward";
+                return;
+            }
+
+            if (!Reward::get($_POST["reward"])) {
+                // 400 Bad Request
+                header("HTTP/1.1 400 Bad Request");
+                echo "Invalid reward";
+                return;
+            }
         }
 
         if (!Chapter::get($_POST["nextChapter"])) {
@@ -190,16 +206,15 @@ $router->mount("/admin/creator", function () use ($router, $blade) {
             return;
         }
 
-        if (!Reward::get($_POST["reward"])) {
-            // 400 Bad Request
-            header("HTTP/1.1 400 Bad Request");
-            echo "Invalid reward";
-            return;
-        }
-
         $choice->setOptionText($_POST["optionText"]);
         $choice->setNextChapterId($_POST["nextChapter"]);
-        $choice->setReward(Reward::get($_POST["reward"]));
+
+        if (!empty($_POST["reward"])) {
+            $choice->setReward(Reward::get($_POST["reward"]));
+        } else {
+            $choice->setReward(null);
+        }
+
         $choice->save();
 
         header("Location: /admin/creator/chapter/" . $choice->getChapter()->getId() . "/edit");
